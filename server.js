@@ -5,8 +5,8 @@ const path = require("path");
 
 const app = express();
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "pages"))); // Serve HTML pages from 'pages' folder
-
+// app.use(express.static(path.join(__dirname, "pages"))); // Serve HTML pages from 'pages' folder
+app.use(express.static(path.join(__dirname))); // Serve from root
 const codesDir = path.join(__dirname, "codes"); // Path to C++ files
 
 app.post("/run", (req, res) => {
