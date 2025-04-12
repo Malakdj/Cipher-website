@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Encryption Algorithms</title>
     <link rel="stylesheet" href="css/ind.css">
 </head>
+
 <body>
 
     <!-- Navbar with "AlgoCipher" and search bar -->
@@ -17,6 +19,12 @@
             <button onclick="searchAlgorithm()">Search</button>
         </div>
     </div>
+
+    <!-- Mobile Menu Button (add near top of body) -->
+    <div class="mobile-menu-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <h1>Encryption Algorithms</h1>
 
@@ -68,4 +76,5 @@
     </script>
 
 </body>
+
 </html>
