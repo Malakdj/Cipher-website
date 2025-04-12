@@ -1,10 +1,10 @@
 {
   "name": "cipher-website",
   "version": "1.0.0",
-  "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install-gcc": "apt-get update && apt-get install -y --no-install-recommends g++",
+    "postinstall": "npm run install-gcc && npm install express"
   },
   "dependencies": {
     "express": "^4.18.2"

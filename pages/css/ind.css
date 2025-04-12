@@ -94,3 +94,124 @@ pre {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+
+
+
+/* ====================================
+   Mobile Responsive Additions
+   (Add to the end of your CSS file)
+   ==================================== */
+
+/* 1. Base Mobile Styles */
+@media screen and (max-width: 767px) {
+    body {
+        padding: 10px;
+        text-align: left;
+        /* Better for mobile reading */
+    }
+
+    /* Navbar Stacking */
+    .navbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px 5px;
+    }
+
+    .navbar h1 {
+        margin: 0 0 10px 0;
+        text-align: center;
+        font-size: 20px;
+    }
+
+    /* Search Bar Adjustments */
+    .search-bar {
+        flex-direction: column;
+        margin: 0;
+    }
+
+    .search-bar input {
+        width: 100% !important;
+        margin: 5px 0 !important;
+        padding: 12px !important;
+    }
+
+    .search-bar button {
+        width: 100%;
+        margin: 5px 0 !important;
+    }
+
+    /* Form Elements */
+    textarea,
+    input,
+    select {
+        width: 95% !important;
+        margin: 8px 0 !important;
+        padding: 12px !important;
+        font-size: 16px;
+        /* Prevent iOS zoom */
+    }
+
+    button {
+        width: 100%;
+        padding: 12px !important;
+    }
+
+    /* Code Blocks */
+    pre {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    /* Spacing Adjustments */
+    .container {
+        padding: 10px;
+    }
+}
+
+/* 2. Small Mobile Devices (<= 400px) */
+@media screen and (max-width: 400px) {
+    .navbar h1 {
+        font-size: 18px;
+    }
+
+    .search-bar input {
+        font-size: 14px;
+    }
+
+    button {
+        padding: 10px !important;
+    }
+}
+
+/* 3. Tablet Styles (768px - 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .search-bar input {
+        width: 180px !important;
+    }
+
+    textarea,
+    input,
+    select {
+        width: 70% !important;
+    }
+}
+
+/* 4. Touch Optimization */
+@media (pointer: coarse) {
+
+    button,
+    .search-bar button,
+    .sidebar button {
+        min-height: 44px;
+        /* Apple's recommended tap target */
+        min-width: 44px;
+    }
+
+    input,
+    select,
+    textarea {
+        min-height: 44px;
+    }
+}

@@ -9,6 +9,15 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'pages')));
 app.use('/css', express.static(path.join(__dirname, 'pages/css')));
 
+
+// Verify g++ is installed during startup
+exec('g++ --version', (error) => {
+  if (error) {
+    console.error('ERROR: g++ compiler not found. Encryption/decryption will fail.');
+  } else {
+    console.log('g++ compiler is available');
+  }
+});
 // Handle encryption requests (from runCipher())
 app.post('/run', (req, res) => {
     const { algorithm, key, message } = req.body;
