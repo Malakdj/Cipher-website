@@ -234,10 +234,11 @@ h2 {
         top: 0;
         height: 100vh;
         width: 250px;
-        transition: all 0.3s ease;
+        transition: left 0.3s;
         z-index: 1000;
         overflow-y: auto;
     }
+
 
     .sidebar.active {
         left: 0;
@@ -283,4 +284,31 @@ h2 {
     .sidebar-overlay {
         display: none !important;
     }
+}
+
+/* Example sidebar styles for mobile */
+.sidebar {
+    position: fixed;
+    left: -250px;
+    width: 250px;
+    transition: left 0.3s;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.sidebar-overlay.active {
+    display: block;
 }

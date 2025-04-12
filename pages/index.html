@@ -73,6 +73,22 @@
                 searchAlgorithm();  // Trigger the search function when "Enter" is pressed
             }
         }
+
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const current = window.location.pathname;
+            const select = document.getElementById("algorithm");
+            for (let option of select.options) {
+                if (current.includes(option.value)) {
+                    option.selected = true;
+                }
+            }
+        });
+
     </script>
 
 </body>

@@ -304,7 +304,7 @@
             const key = document.getElementById("key").value;
             const message = document.getElementById("message").value;
             const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
-            
+
             fetch("https://cipher-website.onrender.com/run", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -329,6 +329,21 @@
                 .then(data => document.getElementById("outputDecryption").textContent = data)
                 .catch(error => console.error("Error:", error));
         }
+
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const current = window.location.pathname;
+            const select = document.getElementById("algorithm");
+            for (let option of select.options) {
+                if (current.includes(option.value)) {
+                    option.selected = true;
+                }
+            }
+        });
 
 
 
