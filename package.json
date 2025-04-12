@@ -1,7 +1,6 @@
 {
   "name": "cipher-website",
   "version": "1.0.0",
-  "description": "Caesar Cipher Encryption/Decryption Website",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
