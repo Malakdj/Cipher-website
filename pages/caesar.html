@@ -298,7 +298,7 @@
             const message = document.getElementById("message").value;
             const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
             
-            fetch("https://your-app-name.onrender.com/run", {
+            fetch("https://cipher-website.onrender.com/run", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ algorithm, key, message })
@@ -313,7 +313,7 @@
             const message = document.getElementById("messageDecryption").value;
             const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
 
-            fetch("https://your-app-name.onrender.com/runDecryption", {
+            fetch("https://cipher-website.onrender.com/runDecryption", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ algorithm, key, message })
