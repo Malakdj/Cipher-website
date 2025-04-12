@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Algorithms</title>
+    <link rel="stylesheet" href="css/ind.css">
+</head>
+<body>
+
+    <!-- Navbar with "AlgoCipher" and search bar -->
+    <div class="navbar">
+        <h1>AlgoCipher</h1>
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Search Algorithm" onkeydown="checkEnter(event)">
+            <button onclick="searchAlgorithm()">Search</button>
+        </div>
+    </div>
+
+    <h1>Encryption Algorithms</h1>
+
+    <label for="algorithm">Choose an algorithm:</label>
+    <select id="algorithm" onchange="goToAlgorithmPage()">
+        <option value="">-- Select Algorithm --</option>
+        <option value="caesar">Caesar Cipher</option>
+        <option value="playfair">Alberti Cipher</option>
+        <!-- Add more algorithms here -->
+    </select>
+
+    <script>
+        // Function to redirect to the selected algorithm page
+        function goToAlgorithmPage() {
+            const algorithm = document.getElementById('algorithm').value;
+            if (algorithm === "playfair") {
+                window.location.href = "/playfair.html";  // Redirect to playfair algorithm page
+            } else if (algorithm === "caesar") {
+                window.location.href = "/caesar.html";  // Redirect to caesar algorithm page
+            }
+        }
+
+        // Function to search and redirect based on the input value
+        function searchAlgorithm() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const algorithms = {
+                caesar: '/caesar.html',
+                playfair: '/playfair.html',
+                // Add more algorithm mappings here
+            };
+
+            // Loop through algorithms and check if any algorithm name starts with the input value
+            for (let key in algorithms) {
+                if (key.startsWith(searchInput)) {
+                    window.location.href = algorithms[key];  // Redirect to the matched algorithm page
+                    return;
+                }
+            }
+
+            alert("Algorithm not found!");  // Alert if no match
+        }
+
+        // Function to check if the "Enter" key was pressed
+        function checkEnter(event) {
+            if (event.key === "Enter") {
+                searchAlgorithm();  // Trigger the search function when "Enter" is pressed
+            }
+        }
+    </script>
+
+</body>
+</html>

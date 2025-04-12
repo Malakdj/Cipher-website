@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher Runner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Logo container with house icon and title -->
+        <div class="logo-container">
+            <h2>Caesar</h2>
+            <a href="index.html">
+                <i class="fas fa-home logo"></i>
+            </a>
+        </div>
+
+        <button onclick="showSlide('definition')" class="active">Definition</button>
+        <button onclick="showSlide('howToWork')">How It Works</button>
+        <button onclick="showSlide('cryptage')">Encryption</button>
+        <button onclick="showSlide('decryptage')">Decryption</button>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content">
+        <div class="container">
+            <!-- Definition Slide -->
+            <div id="definition" class="slide active-slide">
+                <div class="centered-content">
+                    <h3>Definition</h3>
+                    <p>A Caesar cipher is a simple method of encoding messages.
+                        Caesar ciphers use a substitution method where letters in the alphabet are shifted
+                        by some fixed number of spaces to yield an encoding alphabet. A Caesar cipher with
+                        a shift of 1 would encode an A as a B, an M as an N, and a Z as an A, and so on.
+                        The method is named after Roman leader Julius Caesar, who used it in his private correspondence.
+                    </p>
+
+                    <!-- Add an image -->
+                    <img src="imag/caesar1.png" alt="Caesar Cipher Example" class="definition-image">
+                </div>
+            </div>
+
+            <!-- How to Work Slide -->
+            <div id="howToWork" class="slide">
+                <div class="centered-content">
+                    <h3>How the Caesar Cipher Works</h3>
+                    <p>The Caesar Cipher is a simple substitution cipher that shifts letters in the alphabet by a fixed
+                        number (called the "key" or "shift").
+
+                    </p>
+                    <h4>Steps of Caesar Cipher Encryption</h4>
+                    <ul>
+                        <li>Choose a shift value (e.g., <b>Shift = 3</b>).</li>
+                        <li>Replace each letter with the letter <b>3 places ahead</b> in the alphabet.</li>
+                        <li>Example: A → D, B → E, C → F, X → A, Y → B, Z → C.</li>
+                    </ul>
+
+                    <h4>Example Encryption (Shift = 3)</h4>
+                    <p><b>Plaintext:</b> HELLO → <b>Encrypted:</b> KHOOR</p>
+
+                    <h4>Example Decryption (Shift = 3)</h4>
+                    <p><b>Encrypted:</b> KHOOR → <b>Plaintext:</b> HELLO</p>
+                    <h4>Alphabet Shift Table (Shift = 3)</h4>
+                    <table border="1"
+                        style="width: 80%; text-align: center; background: #252526; color: white; border-collapse: collapse; margin-top: 10px;">
+                        <tr style="background: #007acc;">
+                            <th>Plaintext Letter</th>
+                            <th>Ciphertext Letter</th>
+                        </tr>
+                        <tr>
+                            <td>A</td>
+                            <td>D</td>
+                        </tr>
+                        <tr>
+                            <td>B</td>
+                            <td>E</td>
+                        </tr>
+                        <tr>
+                            <td>C</td>
+                            <td>F</td>
+                        </tr>
+                        <tr>
+                            <td>...</td>
+                            <td>...</td>
+                        </tr>
+                        <tr>
+                            <td>X</td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>Y</td>
+                            <td>B</td>
+                        </tr>
+                        <tr>
+                            <td>Z</td>
+                            <td>C</td>
+                        </tr>
+                    </table>
+                    <h4>Caesar Cipher Formula</h4>
+                    <p><b>For Encryption:</b> C = (P + K) mod 26</p>
+                    <p><b>For Decryption:</b> P = (C - K + 26) mod 26</p>
+                    <p>Where:</p>
+                    <ul>
+                        <li><b>C</b> = Ciphertext letter</li>
+                        <li><b>P</b> = Plaintext letter</li>
+                        <li><b>K</b> = Shift value</li>
+                        <li><b>mod 26</b> ensures the alphabet loops back</li>
+                    </ul>
+
+                    <h4>Weaknesses of the Caesar Cipher</h4>
+                    <ul>
+                        <li>Easily broken → Only 25 possible shifts.</li>
+                        <li>Frequency analysis can reveal the message.</li>
+                        <li>More secure ciphers: <b>Vigenère Cipher, AES</b>.</li>
+                    </ul>
+
+                </div>
+            </div>
+
+
+            <!-- Cryptage Slide -->
+            <div id="cryptage" class="slide">
+                <h3>Caesar Cipher Encryption</h3>
+                <input type="hidden" id="algorithmName" value="caesar"> <!-- Adjust this for each algorithm -->
+                <textarea readonly rows="10">
+                        #include <stdio.h>
+                        #include <stdlib.h>
+                        #include <ctype.h>
+                        
+                        #define MAX_LEN 1000
+                        
+                        // Function to encrypt text using Caesar cipher
+                        void encryptCaesar(char *text, int key) {
+                            for (int i = 0; text[i] != '\0'; i++) {
+                                if (isalpha(text[i])) {
+                                    char base = isupper(text[i]) ? 'A' : 'a';
+                                    text[i] = (text[i] - base + key) % 26 + base;
+                                }
+                            }
+                        }
+                        
+                        int main() {
+                            FILE *inputFile = fopen("input.txt", "r");
+                            if (inputFile == NULL) {
+                                printf("Error: Unable to open input file!\n");
+                                return 1;
+                            }
+                            
+                            int key;
+                            char message[MAX_LEN];
+                            
+                            // Read key and message from input file
+                            fscanf(inputFile, "%d", &key);
+                            fgetc(inputFile); // Consume newline
+                            fgets(message, MAX_LEN, inputFile);
+                            fclose(inputFile);
+                            
+                            // Encrypt the message
+                            encryptCaesar(message, key);
+                            
+                            // Print the encrypted message
+                            printf("Encrypted Message: %s", message);
+                            
+                            return 0;
+                        }
+                        
+                </textarea>
+                <br>
+                <label for="key">Enter Key:</label>
+                <input type="text" id="key" placeholder="Enter key...">
+                <label for="message">Enter Message:</label>
+                <textarea id="message" rows="4" placeholder="Enter your message..."></textarea>
+                <button onclick="runCipher()">Run</button>
+                <!-- Output title under the button -->
+                <h2 id="outputTitle">Output:</h2>
+                <pre id="output"></pre>
+            </div>
+            <!-- Decryptage Slide -->
+            <div id="decryptage" class="slide">
+                <h3>Caesar Cipher Decryption</h3>
+                <textarea readonly rows="10">
+                        #include <stdio.h>
+                        #include <string.h>
+                        
+                        void decryptCaesar(char *message, int shift) {
+                            for (int i = 0; message[i] != '\0'; i++) {
+                                char ch = message[i];
+                                
+                                if (ch >= 'A' && ch <= 'Z') {
+                                    ch = (ch - 'A' - shift + 26) % 26 + 'A';
+                                } else if (ch >= 'a' && ch <= 'z') {
+                                    ch = (ch - 'a' - shift + 26) % 26 + 'a';
+                                }
+                                
+                                message[i] = ch;
+                            }
+                        }
+                        
+                        int main() {
+                            char message[100];
+                            int shift;
+                            
+                            FILE *file = fopen("input.txt", "r");
+                            if (file == NULL) {
+                                printf("Error opening file!\n");
+                                return 1;
+                            }
+                            
+                            fscanf(file, "%d", &shift);
+                            fgetc(file); 
+                            fgets(message, sizeof(message), file);
+                            fclose(file);
+                            
+                            decryptCaesar(message, shift);
+                            
+                            printf("Decrypted message: %s", message);
+                            
+                            return 0;
+                        }
+                        
+                </textarea>
+                <br>
+                <label for="keyDecryption">Enter Key:</label>
+                <input type="text" id="keyDecryption" placeholder="Enter key...">
+                <label for="messageDecryption">Enter Message:</label>
+                <textarea id="messageDecryption" rows="4" placeholder="Enter your message..."></textarea>
+                <button onclick="runDecryption()">Run</button>
+                <h2 id="outputTitle">Output:</h2>
+                <pre id="outputDecryption"></pre>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <script>
+
+        function showSlide(slideId, fromLoad = false) {
+            // Hide all slides
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => slide.classList.remove('active-slide'));
+
+            // Show the selected slide
+            document.getElementById(slideId).classList.add('active-slide');
+
+            // Save the selected slide ONLY if it's not from page load
+            if (!fromLoad) {
+                sessionStorage.setItem('selectedSlide', slideId);
+            }
+
+            // Update sidebar button colors
+            updateSidebarButtons(slideId);
+        }
+
+        function updateSidebarButtons(activeSlide) {
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.sidebar button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            // Add active class to the clicked button
+            const activeButton = document.querySelector(`[onclick="showSlide('${activeSlide}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+
+        window.onload = function () {
+            // Get the last visited page name (Caesar, Playfair, etc.)
+            const lastPage = localStorage.getItem('lastPage');
+            const currentPage = document.title; // Uses the title of the page (Caesar, Playfair, etc.)
+
+            if (lastPage !== currentPage) {
+                // If user switched pages, reset to 'definition'
+                sessionStorage.setItem('selectedSlide', 'definition');
+                localStorage.setItem('lastPage', currentPage); // Update last visited page
+            }
+
+            // Load the saved slide or default to 'definition'
+            const savedSlide = sessionStorage.getItem('selectedSlide') || 'definition';
+            showSlide(savedSlide, true);
+        };
+
+
+
+
+        function runCipher() {
+            const key = document.getElementById("key").value;
+            const message = document.getElementById("message").value;
+            const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
+            
+            fetch("https://your-app-name.onrender.com/run", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ algorithm, key, message })
+            })
+                .then(response => response.text())
+                .then(data => document.getElementById("output").textContent = data)
+                .catch(error => console.error("Error:", error));
+        }
+
+        function runDecryption() {
+            const key = document.getElementById("keyDecryption").value;
+            const message = document.getElementById("messageDecryption").value;
+            const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
+
+            fetch("https://your-app-name.onrender.com/runDecryption", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ algorithm, key, message })
+            })
+                .then(response => response.text())
+                .then(data => document.getElementById("outputDecryption").textContent = data)
+                .catch(error => console.error("Error:", error));
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // function runCipher() {
+        //     const key = document.getElementById("key").value;
+        //     const message = document.getElementById("message").value;
+        //     const algorithm = "caesar";  // Set this according to the algorithm's page
+
+        //     fetch("http://localhost:3000/run", {
+        //         method: "POST",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify({ algorithm, key, message })
+        //     })
+        //         .then(response => response.text())
+        //         .then(data => document.getElementById("output").textContent = data)
+        //         .catch(error => console.error("Error:", error));
+        // }
+
+        // function runDecryption() {
+        //     const key = document.getElementById("keyDecryption").value;
+        //     const message = document.getElementById("messageDecryption").value;
+        //     const algorithm = "caesar";  // Keep it the same algorithm
+
+        //     fetch("http://localhost:3000/runDecryption", {
+        //         method: "POST",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify({ algorithm, key, message })
+        //     })
+        //         .then(response => response.text())
+        //         .then(data => document.getElementById("outputDecryption").textContent = data)
+        //         .catch(error => console.error("Error:", error));
+        // }
+
+    </script>
+</body>
+
+</html>

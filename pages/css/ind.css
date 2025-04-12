@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #1e1e1e;
+    color: white;
+    padding: 20px;
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+}
+
+.navbar h1 {
+    margin-left: 20px;
+    font-size: 24px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    padding: 10px;
+    margin-left: 20px;
+    margin-right: 10px;
+    /* Space on the right */
+    background-color: #333;
+    color: pink;
+    border: 1px solid #555;
+    border-radius: 5px;
+    width: 250px;
+    /* Increased size */
+}
+
+.search-bar input:focus {
+    border: 2px solid pink;
+    /* Change border to red on focus */
+    outline: none;
+    /* Remove the default outline */
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    /* background-color: #007acc; */
+    background-color: pink;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    /* background-color: #005f99; */
+    background-color: pink;
+}
+
+textarea,
+input,
+select {
+    width: 80%;
+    padding: 10px;
+    margin: 10px;
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    /* background-color: #007acc; */
+    background-color: pink;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    /* background-color: #005f99; */
+    background-color: pink;
+}
+
+pre {
+    background-color: #282828;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
