@@ -34,10 +34,10 @@
         // Function to redirect to the selected algorithm page
         function goToAlgorithmPage() {
             const algorithm = document.getElementById('algorithm').value;
-            if (algorithm === "alberti") {
-                window.location.href = "/alberti.html";  // Redirect to playfair algorithm page
-            } else if (algorithm === "caesar") {
-                window.location.href = "/caesar.html";  // Redirect to caesar algorithm page
+            if (algorithm === "caesar") {
+                window.location.href = "/caesar.html";  // Redirect to alberti algorithm page
+            } else if (algorithm === "alberti") {
+                window.location.href = "/alberti.html";  // Redirect to caesar algorithm page
             }
         }
 
@@ -46,7 +46,7 @@
             const searchInput = document.getElementById('search').value.toLowerCase();
             const algorithms = {
                 caesar: '/caesar.html',
-                playfair: '/alberti.html',
+                alberti: '/alberti.html',
                 // Add more algorithm mappings here
             };
 
