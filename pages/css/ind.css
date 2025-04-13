@@ -95,5 +95,60 @@ pre {
     word-wrap: break-word;
 }
 
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
 
+    /* Shrink the search bar input just on phone */
+    .search-bar input {
+        width: 160px;
+        padding: 6px;
+        font-size: 14px;
+    }
 
+    .search-bar button {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    /* Show search input and button side by side */
+    .search-bar {
+        flex-direction: row;
+        /* Changed from column to row */
+        align-items: center;
+        /* Align input and button nicely */
+        gap: 5px;
+        /* Optional spacing between them */
+        width: 100%;
+        margin-left: 10px;
+    }
+
+    /* Make select dropdown prettier and fit on small screens */
+    select {
+        width: 90%;
+        padding: 10px;
+        font-size: 15px;
+        border-radius: 5px;
+        background-color: #333;
+        color: white;
+        border: 1px solid #555;
+        margin: 10px auto;
+    }
+
+    /* Optional: make main title smaller */
+    h1 {
+        font-size: 20px;
+    }
+
+    .navbar h1 {
+        font-size: 18px;
+        margin-left: 10px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

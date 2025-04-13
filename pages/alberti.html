@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alberti Cipher Runner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Logo container with house icon and title -->
+        <div class="logo-container">
+            <h2>Alberti</h2>
+            <a href="index.html">
+                <i class="fas fa-home logo"></i>
+            </a>
+        </div>
+
+        <button onclick="showSlide('definition')" class="active">Definition</button>
+        <button onclick="showSlide('howToWork')">How It Works</button>
+        <button onclick="showSlide('cryptage')">Encryption</button>
+        <button onclick="showSlide('decryptage')">Decryption</button>
+    </div>
+
+    <!-- Mobile Menu Button (add near top of body) -->
+    <div class="mobile-menu-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+
+
+    <!-- Content Area -->
+    <div class="content">
+        <div class="container">
+            <!-- Definition Slide -->
+            <div id="definition" class="slide active-slide">
+                <div class="centered-content">
+                    <h3>Definition</h3>
+                    <p>The Alberti Cipher is one of the earliest known polyalphabetic substitution ciphers, 
+                        invented by the Italian Renaissance scholar Leon Battista Alberti in 1467. 
+                        It uses multiple cipher alphabets to encrypt plaintext, making it more secure than 
+                        simple substitution ciphers like the Caesar cipher.
+                        Alberti's cipher introduced the concept of a cipher disk, consisting of 
+                        two concentric disks (an outer fixed disk and an inner movable disk) with alphabets 
+                        inscribed on them. By rotating the inner disk, different substitution alphabets could be used, increasing cryptographic strength.
+                    </p>
+
+                    <!-- Add an image -->
+                    <!-- <img src="imag/Alberti1.png" alt="Alberti Cipher Example" class="definition-image"> -->
+                </div>
+            </div>
+
+            <!-- How to Work Slide -->
+            <div id="howToWork" class="slide">
+                <div class="centered-content">
+                    <h3>How the Alberti Cipher Works</h3>
+                    <p>The Alberti Cipher is a <b>polyalphabetic substitution cipher</b> invented by Leon Battista Alberti in 1467. It uses multiple cipher alphabets via a rotating disk system, making it stronger than simple substitution ciphers.</p>
+            
+                    <h4>Components of the Alberti Cipher</h4>
+                    <ul>
+                        <li><b>Fixed (Outer) Disk</b> – Contains a standard alphabet (usually uppercase).</li>
+                        <li><b>Movable (Inner) Disk</b> – Contains a scrambled or shifted alphabet (usually lowercase).</li>
+                        <li><b>Index Letter</b> – A reference point to align the disks (the <b>key</b>).</li>
+                        <li><b>Numerals (Optional)</b> – Some versions include numbers for extra encryption.</li>
+                    </ul>
+            
+                    <h4>Encryption Process</h4>
+                    <ol>
+                        <li><b>Set the Initial Position:</b> Align a letter on the inner disk (e.g., 'e') with a reference letter on the outer disk (e.g., 'A').</li>
+                        <li><b>Encrypt Each Letter:</b>
+                            <ul>
+                                <li>Find the plaintext letter on the <b>outer disk</b>.</li>
+                                <li>Replace it with the corresponding letter on the <b>inner disk</b>.</li>
+                            </ul>
+                        </li>
+                        <li><b>Rotate the Disk:</b> Periodically turn the inner disk (e.g., every 3 letters) to change the substitution alphabet.</li>
+                    </ol>
+            
+                    <h4>Decryption Process</h4>
+                    <ol>
+                        <li><b>Set the Initial Position:</b> Align the disks using the same key as encryption.</li>
+                        <li><b>Decrypt Each Letter:</b>
+                            <ul>
+                                <li>Find the ciphertext letter on the <b>inner disk</b>.</li>
+                                <li>Replace it with the corresponding letter on the <b>outer disk</b>.</li>
+                            </ul>
+                        </li>
+                        <li><b>Rotate the Disk:</b> Match the same rotation intervals used during encryption.</li>
+                    </ol>
+            
+                    <h4>Example Encryption (Shift = 4, Initial Alignment: 'A' → 'e')</h4>
+                    <table border="1" style="width: 80%; text-align: center; background: #252526; color: white; border-collapse: collapse; margin-top: 10px;">
+                        <tr style="background: #007acc;">
+                            <th>Plaintext Letter</th>
+                            <th>Ciphertext Letter</th>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>l</td>
+                        </tr>
+                        <tr>
+                            <td>E</td>
+                            <td>i</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>p</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>p</td>
+                        </tr>
+                        <tr>
+                            <td>O</td>
+                            <td>s</td>
+                        </tr>
+                    </table>
+                    <p><b>Plaintext:</b> HELLO → <b>Ciphertext:</b> lipps</p>
+            
+                    <h4>Weaknesses of the Alberti Cipher</h4>
+                    <ul>
+                        <li>Manual key management → Vulnerable if rotation patterns are predictable.</li>
+                        <li>Frequency analysis can break it if the disk isn’t rotated often.</li>
+                        <li>Modern alternatives: <b>Vigenère Cipher, AES</b>.</li>
+                    </ul>
+            
+                    <h4>Why It Matters</h4>
+                    <p>The Alberti Cipher was the first <b>polyalphabetic cipher</b>, paving the way for stronger encryption methods like the Vigenère Cipher.</p>
+                </div>
+            </div>
+
+
+            <!-- Cryptage Slide -->
+            <div id="cryptage" class="slide">
+                <h3>Alberti Cipher Encryption</h3>
+                <input type="hidden" id="algorithmName" value="Alberti"> <!-- Adjust this for each algorithm -->
+                <textarea readonly rows="10">
+                    #include <stdio.h>
+                    #include <string.h>
+                    #include <ctype.h>
+                        
+                    const char outer_disk[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    const char inner_disk[] = "abcdefghijklmnopqrstuvwxyz";
+                        
+                    int find_pos(const char *disk, char c) {
+                        for (int i = 0; i < 26; i++) {
+                            if (disk[i] == c) return i;
+                        }
+                        return -1;
+                    }
+                        
+                    void alberti_encrypt(const char *plaintext, char *ciphertext, char key, int rotate_interval) {
+                        int shift = find_pos(outer_disk, toupper(key));
+                        if (shift == -1) {
+                            printf("Invalid key! Use A-Z.\n");
+                            return;
+                        }
+                        
+                        int rotation_counter = 0;
+                        for (int i = 0; plaintext[i] != '\0'; i++) {
+                            if (isalpha(plaintext[i])) {
+                                char upper_char = toupper(plaintext[i]);
+                                int pos = find_pos(outer_disk, upper_char);
+                                ciphertext[i] = inner_disk[(pos + shift) % 26];
+                                    
+                                rotation_counter++;
+                                if (rotation_counter % rotate_interval == 0) {
+                                    shift = (shift + 1) % 26; // Rotate disk
+                                }
+                            } else {
+                                ciphertext[i] = plaintext[i]; // Non-alphabetic
+                            }
+                        }
+                        ciphertext[strlen(plaintext)] = '\0';
+                    }
+                        
+                int main() {
+                    char plaintext[100], ciphertext[100];
+                    char key;
+                    int rotate_interval;
+                        
+                    printf("=== Alberti Cipher Encryption ===\n");
+                    printf("Enter plaintext: ");
+                    fgets(plaintext, sizeof(plaintext), stdin);
+                    plaintext[strcspn(plaintext, "\n")] = '\0';
+                        
+                    printf("Enter key (A-Z): ");
+                    scanf(" %c", &key);
+                    key = toupper(key);
+                        
+                        printf("Rotation interval: ");
+                        scanf("%d", &rotate_interval);
+                        
+                        alberti_encrypt(plaintext, ciphertext, key, rotate_interval);
+                        printf("Encrypted: %s\n", ciphertext);
+                        
+                        return 0;
+                    }
+                        
+                </textarea>
+                <br>
+                <label for="key">Enter Key (A-Z):</label>
+                <input type="text" id="key" placeholder="A-Z" maxlength="1">
+                <label for="key">Rotation Interval:</label>
+                <input type="number" id="rotateInterval" placeholder="e.g., 3" min="1">
+                <label for="message">Enter Message:</label>
+                <textarea id="message" rows="4" placeholder="Enter your message..."></textarea>
+                <button onclick="runCipher()">Run</button>
+                <!-- Output title under the button -->
+                <h2 id="outputTitle">Output:</h2>
+                <pre id="output"></pre>
+            </div>
+            <!-- Decryptage Slide -->
+            <div id="decryptage" class="slide">
+                <h3>Alberti Cipher Decryption</h3>
+                <textarea readonly rows="10">
+                    #include <stdio.h>
+                    #include <string.h>
+                    #include <ctype.h>
+                        
+                    const char outer_disk[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    const char inner_disk[] = "abcdefghijklmnopqrstuvwxyz";
+                        
+                    int find_pos(const char *disk, char c) {
+                        for (int i = 0; i < 26; i++) {
+                            if (disk[i] == c) return i;
+                        }
+                        return -1;
+                    }
+                        
+                    void alberti_decrypt(const char *ciphertext, char *plaintext, char key, int rotate_interval) {
+                        int shift = find_pos(outer_disk, toupper(key));
+                        if (shift == -1) {
+                            printf("Invalid key! Use A-Z.\n");
+                            return;
+                        }
+                        
+                        int rotation_counter = 0;
+                        for (int i = 0; ciphertext[i] != '\0'; i++) {
+                            if (isalpha(ciphertext[i])) {
+                                char lower_char = tolower(ciphertext[i]);
+                                int pos = find_pos(inner_disk, lower_char);
+                                plaintext[i] = outer_disk[(pos - shift + 26) % 26];
+                                    
+                                rotation_counter++;
+                                if (rotation_counter % rotate_interval == 0) {
+                                    shift = (shift + 1) % 26; // Rotate disk
+                                }
+                            } else {
+                                plaintext[i] = ciphertext[i]; // Non-alphabetic
+                            }
+                        }
+                        plaintext[strlen(ciphertext)] = '\0';
+                    }
+                        
+                    int main() {
+                        char ciphertext[100], plaintext[100];
+                        char key;
+                        int rotate_interval;
+                        
+                        printf("=== Alberti Cipher Decryption ===\n");
+                        printf("Enter ciphertext: ");
+                        fgets(ciphertext, sizeof(ciphertext), stdin);
+                        ciphertext[strcspn(ciphertext, "\n")] = '\0';
+                        
+                        printf("Enter key (A-Z): ");
+                        scanf(" %c", &key);
+                        key = toupper(key);
+                        
+                        printf("Rotation interval: ");
+                        scanf("%d", &rotate_interval);
+                        
+                        alberti_decrypt(ciphertext, plaintext, key, rotate_interval);
+                        printf("Decrypted: %s\n", plaintext);
+                        
+                        return 0;
+                    }
+                        
+                </textarea>
+                <br>
+                <label for="key">Enter Key (A-Z):</label>
+                <input type="text" id="key" placeholder="A-Z" maxlength="1">
+                <label for="key">Rotation Interval:</label>
+                <input type="number" id="rotateInterval" placeholder="e.g., 3" min="1">
+                <label for="message">Enter Message:</label>
+                <textarea id="message" rows="4" placeholder="Enter your message..."></textarea>
+                <button onclick="runDecryption()">Run</button>
+                <h2 id="outputTitle">Output:</h2>
+                <pre id="outputDecryption"></pre>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <script>
+
+        function showSlide(slideId, fromLoad = false) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => slide.classList.remove('active-slide'));
+
+            document.getElementById(slideId).classList.add('active-slide');
+
+            if (!fromLoad) {
+                sessionStorage.setItem('selectedSlide', slideId);
+            }
+
+            updateSidebarButtons(slideId);
+        }
+
+        function updateSidebarButtons(activeSlide) {
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.sidebar button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            // Add active class to the clicked button
+            const activeButton = document.querySelector(`[onclick="showSlide('${activeSlide}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+
+        window.onload = function () {
+            const currentPage = document.title;
+            const lastPage = localStorage.getItem('lastPage');
+
+            if (lastPage !== currentPage) {
+                // User came from a different page → reset to first slide
+                sessionStorage.removeItem('selectedSlide');
+                localStorage.setItem('lastPage', currentPage);
+            }
+
+            const savedSlide = sessionStorage.getItem('selectedSlide') || 'definition';
+            showSlide(savedSlide, true); // Pass true to indicate this is from page load
+        };
+
+        window.addEventListener('beforeunload', function () {
+            const navigationType = performance.getEntriesByType("navigation")[0].type;
+            if (navigationType === "navigate" || navigationType === "reload") {
+                // Keep the slide state for refreshes
+                return;
+            }
+            // Clear for other types of navigation
+            sessionStorage.removeItem('selectedSlide');
+        });
+
+
+        function showSlide(slideId) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => slide.classList.remove('active-slide'));
+
+            document.getElementById(slideId).classList.add('active-slide');
+            sessionStorage.setItem('selectedSlide', slideId);
+
+            updateSidebarButtons(slideId);
+        }
+
+       
+
+
+
+
+
+        function runCipher() {
+            const key = document.getElementById("key").value;
+            const message = document.getElementById("message").value;
+            const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
+
+            fetch("https://cipher-website.onrender.com/run", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ algorithm, key, message })
+            })
+                .then(response => response.text())
+                .then(data => document.getElementById("output").textContent = data)
+                .catch(error => console.error("Error:", error));
+        }
+
+        function runDecryption() {
+            const key = document.getElementById("keyDecryption").value;
+            const message = document.getElementById("messageDecryption").value;
+            const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
+
+            fetch("https://cipher-website.onrender.com/runDecryption", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ algorithm, key, message })
+            })
+                .then(response => response.text())
+                .then(data => document.getElementById("outputDecryption").textContent = data)
+                .catch(error => console.error("Error:", error));
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            const isActive = sidebar.classList.contains('active');
+
+            if (isActive) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            } else {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+
+        // Close sidebar on body click or button click inside it (mobile only)
+        document.addEventListener('click', function (event) {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const button = document.querySelector('.mobile-menu-btn');
+
+            const clickedInsideSidebar = sidebar.contains(event.target);
+            const clickedButton = button.contains(event.target);
+
+            if (window.innerWidth <= 768 && !clickedInsideSidebar && !clickedButton) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        });
+
+        // Also close sidebar when any sidebar button is clicked
+        const sidebarButtons = document.querySelectorAll('.sidebar button');
+        sidebarButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.sidebar').classList.remove('active');
+                    document.querySelector('.sidebar-overlay').classList.remove('active');
+                }
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>

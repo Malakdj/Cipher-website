@@ -223,6 +223,13 @@ h2 {
     display: inline-block;
 }
 
+@media (min-width: 769px) {
+    .mobile-menu-btn {
+        display: none;
+        /* Hide the hamburger icon on desktop */
+    }
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
     body {
@@ -246,6 +253,7 @@ h2 {
 
     .mobile-menu-btn {
         position: fixed;
+        display: block;
         top: 20px;
         right: 20px;
         background-color: pink;
@@ -258,6 +266,7 @@ h2 {
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         transition: background-color 0.3s ease;
     }
+
 
 
     /* .sidebar.active~.mobile-menu-btn {
