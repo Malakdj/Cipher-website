@@ -1,90 +1,79 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include <stdlib.h>
 
 #define MAX_LEN 1000
 
-const char outer_disk[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const char inner_disk[] = "abcdefghijklmnopqrstuvwxyz";
+void encryptAlberti(const char* input, char* output, char key_char) {
+    char outer_disk[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    char inner_disk[] = "abcdefghijklmnopqrstuvwxyz";
 
-int find_pos(const char *disk, char c) {
-    c = toupper(c);
-    for (int i = 0; i < 26; i++) {
-        if (disk[i] == c) return i;
-    }
-    return -1;
-}
+    int rotation = key_char - 'a';
+    char rotated_inner[27];
 
-void alberti_encrypt(const char *plaintext, char *ciphertext, char key, int rotate_interval) {
-    // Key 'A' means outer A aligns with inner 'e' (shift of +4)
-    int shift = (find_pos(inner_disk, 'e') - find_pos(outer_disk, 'A') + 26) % 26;
-    shift = (shift + find_pos(outer_disk, toupper(key))) % 26;
+    for (int i = 0; i < 26; ++i)
+        rotated_inner[i] = inner_disk[(i + rotation) % 26];
+    rotated_inner[26] = '\0';
 
-    int rotation_counter = 0;
-    for (int i = 0; plaintext[i] != '\0'; i++) {
-        if (isalpha(plaintext[i])) {
-            char upper_char = toupper(plaintext[i]);
-            int pos = find_pos(outer_disk, upper_char);
-            ciphertext[i] = inner_disk[(pos + shift) % 26];
-            
-            rotation_counter++;
-            if (rotation_counter % rotate_interval == 0) {
-                shift = (shift + 1) % 26; // Rotate disk
-            }
+    int j = 0;
+    for (int i = 0; input[i] != '\0'; ++i) {
+        char ch = toupper(input[i]);
+        if (ch >= 'A' && ch <= 'Z') {
+            int index = ch - 'A';
+            output[j++] = rotated_inner[index];
         } else {
-            ciphertext[i] = plaintext[i]; // Non-alphabetic
+            output[j++] = input[i];
         }
     }
-    ciphertext[strlen(plaintext)] = '\0';
+    output[j] = '\0';
 }
 
 int main() {
-    FILE *inputFile = fopen("input.txt", "r");
-    if (inputFile == NULL) {
-        printf("Error: Unable to open input file!\n");
+    char message[MAX_LEN], key_char;
+
+    // Step 1: Get input from user
+    printf("Enter the message to encrypt: ");
+    fgets(message, MAX_LEN, stdin);
+    message[strcspn(message, "\n")] = '\0';
+
+    printf("Enter the key (one lowercase letter a-z): ");
+    scanf(" %c", &key_char);
+
+    if (key_char < 'a' || key_char > 'z') {
+        printf("Invalid key. It must be a lowercase letter from a to z.\n");
         return 1;
     }
-    
-    char key_char;
-    char key_line[10];
-    int rotate_interval;
-    char plaintext[MAX_LEN];
-    char ciphertext[MAX_LEN];
-    
-    // Read key (first line)
-    if (fgets(key_line, sizeof(key_line), inputFile) == NULL) {
-        printf("Error reading key from file!\n");
-        fclose(inputFile);
+
+    // Step 2: Save to input.txt
+    FILE* fout = fopen("input.txt", "w");
+    if (!fout) {
+        printf("Failed to write to input.txt\n");
         return 1;
     }
-    key_char = key_line[0];
-    key_char = toupper(key_char);
-    
-    // Read rotation interval (second line)
-    if (fscanf(inputFile, "%d", &rotate_interval) != 1) {
-        printf("Error reading rotation interval from file!\n");
-        fclose(inputFile);
+    fprintf(fout, "%s\n%c\n", message, key_char);
+    fclose(fout);
+
+    // Step 3: Read back from input.txt
+    FILE* fin = fopen("input.txt", "r");
+    if (!fin) {
+        printf("Failed to read from input.txt\n");
         return 1;
     }
-    fgetc(inputFile); // Consume newline
-    
-    // Read plaintext (third line)
-    if (fgets(plaintext, MAX_LEN, inputFile) == NULL) {
-        printf("Error reading plaintext from file!\n");
-        fclose(inputFile);
-        return 1;
-    }
-    fclose(inputFile);
-    
-    // Remove newline if present
-    plaintext[strcspn(plaintext, "\n")] = '\0';
-    
-    // Encrypt the message
-    alberti_encrypt(plaintext, ciphertext, key_char, rotate_interval);
-    
-    // Print the encrypted message
-    printf("%s", ciphertext);
-    
+
+    char input[MAX_LEN], key_line[10];
+    fgets(input, MAX_LEN, fin);
+    fgets(key_line, sizeof(key_line), fin);
+    fclose(fin);
+
+    input[strcspn(input, "\n")] = '\0';
+    char key = key_line[0];
+
+    // Step 4: Encrypt
+    char output[MAX_LEN];
+    encryptAlberti(input, output, key);
+
+    // Step 5: Output result
+    printf("Encrypted text: %s\n", output);
+
     return 0;
 }
