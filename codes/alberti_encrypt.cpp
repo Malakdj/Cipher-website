@@ -17,7 +17,7 @@ int find_pos(const char *disk, char c) {
 }
 
 void alberti_encrypt(const char *plaintext, char *ciphertext, char key, int rotate_interval) {
-    // Key 'A' should mean outer A aligns with inner 'e' (shift of 4)
+    // Key 'A' means outer A aligns with inner 'e' (shift of +4)
     int shift = (find_pos(inner_disk, 'e') - find_pos(outer_disk, 'A') + 26) % 26;
     shift = (shift + find_pos(outer_disk, toupper(key))) % 26;
 
