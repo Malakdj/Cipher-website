@@ -295,12 +295,13 @@
                         
                 </textarea>
                 <br>
-                <label for="key">Enter Key (A-Z):</label>
-                <input type="text" id="key" placeholder="A-Z" maxlength="1">
-                <label for="key">Rotation Interval:</label>
+                <!-- In the decryption section, change the input IDs to be unique -->
+                <label for="keyDecryption">Enter Key (A-Z):</label>
+                <input type="text" id="keyDecryption" placeholder="A-Z" maxlength="1">
+                <label for="rotateIntervalDecryption">Rotation Interval:</label>
                 <input type="number" id="rotateIntervalDecryption" placeholder="e.g., 3" min="1">
-                <label for="message">Enter Message:</label>
-                <textarea id="message" rows="4" placeholder="Enter your message..."></textarea>
+                <label for="messageDecryption">Enter Message:</label>
+                <textarea id="messageDecryption" rows="4" placeholder="Enter ciphertext..."></textarea>
                 <button onclick="runDecryption()">Run</button>
                 <h2 id="outputTitle">Output:</h2>
                 <pre id="outputDecryption"></pre>

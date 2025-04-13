@@ -9,6 +9,7 @@ const char outer_disk[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char inner_disk[] = "abcdefghijklmnopqrstuvwxyz";
 
 int find_pos(const char *disk, char c) {
+    c = toupper(c);
     for (int i = 0; i < 26; i++) {
         if (disk[i] == c) return i;
     }
@@ -16,11 +17,9 @@ int find_pos(const char *disk, char c) {
 }
 
 void alberti_decrypt(const char *ciphertext, char *plaintext, char key, int rotate_interval) {
-    int shift = find_pos(outer_disk, toupper(key));
-    if (shift == -1) {
-        printf("Invalid key! Use A-Z.\n");
-        return;
-    }
+    // Initial shift should match encryption (A→e is +4)
+    int shift = (find_pos(inner_disk, 'e') - find_pos(outer_disk, 'A') + 26) % 26;
+    shift = (shift + find_pos(outer_disk, toupper(key))) % 26;
 
     int rotation_counter = 0;
     for (int i = 0; ciphertext[i] != '\0'; i++) {
@@ -31,7 +30,7 @@ void alberti_decrypt(const char *ciphertext, char *plaintext, char key, int rota
             
             rotation_counter++;
             if (rotation_counter % rotate_interval == 0) {
-                shift = (shift + 1) % 26; // Rotate disk
+                shift = (shift + 1) % 26; // Rotate disk (must match encryption)
             }
         } else {
             plaintext[i] = ciphertext[i]; // Non-alphabetic
