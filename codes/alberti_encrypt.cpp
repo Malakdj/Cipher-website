@@ -1,28 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 
 #define MAX_LEN 1000
 
-// Function to encrypt text using Alberti cipher
-void encryptAlberti(char *text, char key_char) {
-    char outer_disk[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    char inner_disk[] = "abcdefghijklmnopqrstuvwxyz";
-    char rotated_inner[26];
+const char outer_disk[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const char inner_disk[] = "abcdefghijklmnopqrstuvwxyz";
 
-    int rotation = key_char - 'a';
-
-    // Prepare rotated inner disk
+int find_pos(const char *disk, char c) {
     for (int i = 0; i < 26; i++) {
-        rotated_inner[i] = inner_disk[(i + rotation) % 26];
+        if (disk[i] == c) return i;
     }
+    return -1;
+}
 
-    // Encrypt the message
+void alberti_encrypt(char *text, char key_char, int rotate_interval) {
+    int shift = find_pos(outer_disk, toupper(key_char));
+    if (shift == -1) {
+        printf("Invalid key! Use A-Z.\n");
+        return;
+    }
+    
+    int rotation_counter = 0;
     for (int i = 0; text[i] != '\0'; i++) {
         if (isalpha(text[i])) {
-            char upper_ch = toupper(text[i]);
-            int index = upper_ch - 'A';
-            text[i] = rotated_inner[index];
+            char upper_char = toupper(text[i]);
+            int pos = find_pos(outer_disk, upper_char);
+            text[i] = inner_disk[(pos + shift) % 26];
+            
+            rotation_counter++;
+            if (rotation_counter % rotate_interval == 0) {
+                shift = (shift + 1) % 26; // Rotate disk
+            }
         }
     }
 }
@@ -35,25 +45,21 @@ int main() {
     }
 
     char key_char;
+    int rotate_interval;
     char message[MAX_LEN];
 
-    // Read key and message from input file
+    // Read key, rotation interval, and message from input file
     fscanf(inputFile, " %c", &key_char);
+    fscanf(inputFile, "%d", &rotate_interval);
     fgetc(inputFile); // Consume newline
     fgets(message, MAX_LEN, inputFile);
     fclose(inputFile);
 
-    // Check key validity
-    if (key_char < 'a' || key_char > 'z') {
-        printf("Error: Key must be a lowercase letter (a-z).\n");
-        return 1;
-    }
-
     // Encrypt the message
-    encryptAlberti(message, key_char);
+    alberti_encrypt(message, key_char, rotate_interval);
 
     // Print the encrypted message
-    printf("Encrypted Message: %s", message);
+    printf("%s", message);
 
     return 0;
 }
