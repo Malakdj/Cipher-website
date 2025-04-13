@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    
+
 
 </head>
 
@@ -45,13 +45,14 @@
             <div id="definition" class="slide active-slide">
                 <div class="centered-content">
                     <h3>Definition</h3>
-                    <p>The Alberti Cipher is one of the earliest known polyalphabetic substitution ciphers, 
-                        invented by the Italian Renaissance scholar Leon Battista Alberti in 1467. 
-                        It uses multiple cipher alphabets to encrypt plaintext, making it more secure than 
+                    <p>The Alberti Cipher is one of the earliest known polyalphabetic substitution ciphers,
+                        invented by the Italian Renaissance scholar Leon Battista Alberti in 1467.
+                        It uses multiple cipher alphabets to encrypt plaintext, making it more secure than
                         simple substitution ciphers like the Caesar cipher.
-                        Alberti's cipher introduced the concept of a cipher disk, consisting of 
-                        two concentric disks (an outer fixed disk and an inner movable disk) with alphabets 
-                        inscribed on them. By rotating the inner disk, different substitution alphabets could be used, increasing cryptographic strength.
+                        Alberti's cipher introduced the concept of a cipher disk, consisting of
+                        two concentric disks (an outer fixed disk and an inner movable disk) with alphabets
+                        inscribed on them. By rotating the inner disk, different substitution alphabets could be used,
+                        increasing cryptographic strength.
                     </p>
 
                     <!-- Add an image -->
@@ -63,28 +64,33 @@
             <div id="howToWork" class="slide">
                 <div class="centered-content">
                     <h3>How the Alberti Cipher Works</h3>
-                    <p>The Alberti Cipher is a <b>polyalphabetic substitution cipher</b> invented by Leon Battista Alberti in 1467. It uses multiple cipher alphabets via a rotating disk system, making it stronger than simple substitution ciphers.</p>
-            
+                    <p>The Alberti Cipher is a <b>polyalphabetic substitution cipher</b> invented by Leon Battista
+                        Alberti in 1467. It uses multiple cipher alphabets via a rotating disk system, making it
+                        stronger than simple substitution ciphers.</p>
+
                     <h4>Components of the Alberti Cipher</h4>
                     <ul>
                         <li><b>Fixed (Outer) Disk</b> – Contains a standard alphabet (usually uppercase).</li>
-                        <li><b>Movable (Inner) Disk</b> – Contains a scrambled or shifted alphabet (usually lowercase).</li>
+                        <li><b>Movable (Inner) Disk</b> – Contains a scrambled or shifted alphabet (usually lowercase).
+                        </li>
                         <li><b>Index Letter</b> – A reference point to align the disks (the <b>key</b>).</li>
                         <li><b>Numerals (Optional)</b> – Some versions include numbers for extra encryption.</li>
                     </ul>
-            
+
                     <h4>Encryption Process</h4>
                     <ol>
-                        <li><b>Set the Initial Position:</b> Align a letter on the inner disk (e.g., 'e') with a reference letter on the outer disk (e.g., 'A').</li>
+                        <li><b>Set the Initial Position:</b> Align a letter on the inner disk (e.g., 'e') with a
+                            reference letter on the outer disk (e.g., 'A').</li>
                         <li><b>Encrypt Each Letter:</b>
                             <ul>
                                 <li>Find the plaintext letter on the <b>outer disk</b>.</li>
                                 <li>Replace it with the corresponding letter on the <b>inner disk</b>.</li>
                             </ul>
                         </li>
-                        <li><b>Rotate the Disk:</b> Periodically turn the inner disk (e.g., every 3 letters) to change the substitution alphabet.</li>
+                        <li><b>Rotate the Disk:</b> Periodically turn the inner disk (e.g., every 3 letters) to change
+                            the substitution alphabet.</li>
                     </ol>
-            
+
                     <h4>Decryption Process</h4>
                     <ol>
                         <li><b>Set the Initial Position:</b> Align the disks using the same key as encryption.</li>
@@ -96,9 +102,10 @@
                         </li>
                         <li><b>Rotate the Disk:</b> Match the same rotation intervals used during encryption.</li>
                     </ol>
-            
+
                     <h4>Example Encryption (Shift = 4, Initial Alignment: 'A' → 'e')</h4>
-                    <table border="1" style="width: 80%; text-align: center; background: #252526; color: white; border-collapse: collapse; margin-top: 10px;">
+                    <table border="1"
+                        style="width: 80%; text-align: center; background: #252526; color: white; border-collapse: collapse; margin-top: 10px;">
                         <tr style="background: #007acc;">
                             <th>Plaintext Letter</th>
                             <th>Ciphertext Letter</th>
@@ -125,16 +132,17 @@
                         </tr>
                     </table>
                     <p><b>Plaintext:</b> HELLO → <b>Ciphertext:</b> lipps</p>
-            
+
                     <h4>Weaknesses of the Alberti Cipher</h4>
                     <ul>
                         <li>Manual key management → Vulnerable if rotation patterns are predictable.</li>
                         <li>Frequency analysis can break it if the disk isn’t rotated often.</li>
                         <li>Modern alternatives: <b>Vigenère Cipher, AES</b>.</li>
                     </ul>
-            
+
                     <h4>Why It Matters</h4>
-                    <p>The Alberti Cipher was the first <b>polyalphabetic cipher</b>, paving the way for stronger encryption methods like the Vigenère Cipher.</p>
+                    <p>The Alberti Cipher was the first <b>polyalphabetic cipher</b>, paving the way for stronger
+                        encryption methods like the Vigenère Cipher.</p>
                 </div>
             </div>
 
@@ -290,7 +298,7 @@
                 <label for="key">Enter Key (A-Z):</label>
                 <input type="text" id="key" placeholder="A-Z" maxlength="1">
                 <label for="key">Rotation Interval:</label>
-                <input type="number" id="rotateInterval" placeholder="e.g., 3" min="1">
+                <input type="number" id="rotateIntervalDecryption" placeholder="e.g., 3" min="1">
                 <label for="message">Enter Message:</label>
                 <textarea id="message" rows="4" placeholder="Enter your message..."></textarea>
                 <button onclick="runDecryption()">Run</button>
@@ -366,7 +374,7 @@
             updateSidebarButtons(slideId);
         }
 
-       
+
 
 
 
@@ -375,31 +383,61 @@
         function runCipher() {
             const key = document.getElementById("key").value;
             const message = document.getElementById("message").value;
-            const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
+            const rotateInterval = document.getElementById("rotateInterval").value;
+            const algorithm = document.getElementById("algorithmName").value;
+
+            // Validate inputs
+            if (!key || !message || !rotateInterval) {
+                document.getElementById("output").textContent = "Please fill in all fields (key, message, and rotation interval)";
+                return;
+            }
 
             fetch("https://cipher-website.onrender.com/run", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ algorithm, key, message })
+                body: JSON.stringify({
+                    algorithm,
+                    key,
+                    message,
+                    rotateInterval  // Add this parameter
+                })
             })
                 .then(response => response.text())
                 .then(data => document.getElementById("output").textContent = data)
-                .catch(error => console.error("Error:", error));
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("output").textContent = "Error: " + error.message;
+                });
         }
 
         function runDecryption() {
             const key = document.getElementById("keyDecryption").value;
             const message = document.getElementById("messageDecryption").value;
-            const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
+            const rotateInterval = document.getElementById("rotateIntervalDecryption").value;
+            const algorithm = document.getElementById("algorithmName").value;
+
+            // Validate inputs
+            if (!key || !message || !rotateInterval) {
+                document.getElementById("outputDecryption").textContent = "Please fill in all fields (key, message, and rotation interval)";
+                return;
+            }
 
             fetch("https://cipher-website.onrender.com/runDecryption", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ algorithm, key, message })
+                body: JSON.stringify({
+                    algorithm,
+                    key,
+                    message,
+                    rotateInterval  // Add this parameter
+                })
             })
                 .then(response => response.text())
                 .then(data => document.getElementById("outputDecryption").textContent = data)
-                .catch(error => console.error("Error:", error));
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("outputDecryption").textContent = "Error: " + error.message;
+                });
         }
 
         function toggleSidebar() {
