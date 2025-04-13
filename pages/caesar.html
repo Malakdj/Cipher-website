@@ -599,8 +599,18 @@
             }
 
             const savedSlide = sessionStorage.getItem('selectedSlide') || 'definition';
-            showSlide(savedSlide);
+            showSlide(savedSlide, true); // Pass true to indicate this is from page load
         };
+
+        window.addEventListener('beforeunload', function () {
+            const navigationType = performance.getEntriesByType("navigation")[0].type;
+            if (navigationType === "navigate" || navigationType === "reload") {
+                // Keep the slide state for refreshes
+                return;
+            }
+            // Clear for other types of navigation
+            sessionStorage.removeItem('selectedSlide');
+        });
 
 
         function showSlide(slideId) {
