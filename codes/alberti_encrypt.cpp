@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
+
+#define MAX_LEN 1000
 
 const char outer_disk[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char inner_disk[] = "abcdefghijklmnopqrstuvwxyz";
@@ -38,24 +41,51 @@ void alberti_encrypt(const char *plaintext, char *ciphertext, char key, int rota
 }
 
 int main() {
-    char plaintext[100], ciphertext[100];
-    char key;
+    FILE *inputFile = fopen("input.txt", "r");
+    if (inputFile == NULL) {
+        printf("Error: Unable to open input file!\n");
+        return 1;
+    }
+    
+    char key_char;
+    char key_line[10];
     int rotate_interval;
-
-    printf("=== Alberti Cipher Encryption ===\n");
-    printf("Enter plaintext: ");
-    fgets(plaintext, sizeof(plaintext), stdin);
+    char plaintext[MAX_LEN];
+    char ciphertext[MAX_LEN];
+    
+    // Read key (first line)
+    if (fgets(key_line, sizeof(key_line), inputFile) == NULL) {
+        printf("Error reading key from file!\n");
+        fclose(inputFile);
+        return 1;
+    }
+    key_char = key_line[0];
+    key_char = toupper(key_char);
+    
+    // Read rotation interval (second line)
+    if (fscanf(inputFile, "%d", &rotate_interval) != 1) {
+        printf("Error reading rotation interval from file!\n");
+        fclose(inputFile);
+        return 1;
+    }
+    fgetc(inputFile); // Consume newline
+    
+    // Read plaintext (third line)
+    if (fgets(plaintext, MAX_LEN, inputFile) == NULL) {
+        printf("Error reading plaintext from file!\n");
+        fclose(inputFile);
+        return 1;
+    }
+    fclose(inputFile);
+    
+    // Remove newline if present
     plaintext[strcspn(plaintext, "\n")] = '\0';
-
-    printf("Enter key (A-Z): ");
-    scanf(" %c", &key);
-    key = toupper(key);
-
-    printf("Rotation interval: ");
-    scanf("%d", &rotate_interval);
-
-    alberti_encrypt(plaintext, ciphertext, key, rotate_interval);
-    printf("Encrypted: %s\n", ciphertext);
-
+    
+    // Encrypt the message
+    alberti_encrypt(plaintext, ciphertext, key_char, rotate_interval);
+    
+    // Print the encrypted message
+    printf("%s", ciphertext);
+    
     return 0;
 }
