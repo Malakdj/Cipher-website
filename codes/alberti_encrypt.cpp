@@ -9,6 +9,7 @@ const char outer_disk[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char inner_disk[] = "abcdefghijklmnopqrstuvwxyz";
 
 int find_pos(const char *disk, char c) {
+    c = toupper(c);
     for (int i = 0; i < 26; i++) {
         if (disk[i] == c) return i;
     }
@@ -16,11 +17,9 @@ int find_pos(const char *disk, char c) {
 }
 
 void alberti_encrypt(const char *plaintext, char *ciphertext, char key, int rotate_interval) {
-    int shift = find_pos(outer_disk, toupper(key));
-    if (shift == -1) {
-        printf("Invalid key! Use A-Z.\n");
-        return;
-    }
+    // Key 'A' should mean outer A aligns with inner 'e' (shift of 4)
+    int shift = (find_pos(inner_disk, 'e') - find_pos(outer_disk, 'A') + 26) % 26;
+    shift = (shift + find_pos(outer_disk, toupper(key))) % 26;
 
     int rotation_counter = 0;
     for (int i = 0; plaintext[i] != '\0'; i++) {
