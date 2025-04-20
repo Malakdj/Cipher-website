@@ -57,31 +57,33 @@ const handleAlbertiOperation = (req, res, isEncrypt) => {
 const handleGenericCipher = (req, res, isEncrypt) => {
   const { algorithm, key, message } = req.body;
 
-  if (!algorithm || !key || !message) {
-      return res.status(400).send("Missing algorithm, key, or message");
+  // Normalize algorithm name
+  const normalizedAlgorithm = algorithm.toLowerCase().replace(/è/, 'e'); // "vigenère" → "vigenere"
+
+  if (!normalizedAlgorithm || !key || !message) {
+      return res.status(400).send("Missing required fields");
   }
 
-  // Special handling for Vigenère file names
-  let cppFile;
-  if (algorithm.toLowerCase() === "vigenère") {
-      cppFile = isEncrypt ? "codes/vigenère_encrypt.cpp" : "codes/vigenère_decrypt.cpp";
-  } else {
-      const operation = isEncrypt ? '' : '_decrypt';
-      cppFile = `codes/${algorithm}${operation}.cpp`;
-  }
+  // Handle file names consistently
+  const operation = isEncrypt ? '' : '_decrypt';
+  const cppFile = `codes/${normalizedAlgorithm}${operation}.cpp`;
+  const inputFile = `input_${normalizedAlgorithm}${operation}.txt`;
+  const outputBinary = `${normalizedAlgorithm}${operation}.out`;
 
-  const inputFile = `input_${algorithm}${isEncrypt ? '' : '_decrypt'}.txt`;
-  const outputBinary = `${algorithm}${isEncrypt ? '' : '_decrypt'}.out`;
-
+  // Write input file (key first line, message second line)
   fs.writeFileSync(inputFile, `${key}\n${message}`, 'utf8');
 
-  runCppProgram(cppFile, outputBinary, (err, stdout, stderr) => {
-      if (err) {
-          console.error(`[${algorithm}] Error:`, stderr);
-          return res.status(500).send(stderr || `${algorithm} ${isEncrypt ? 'encryption' : 'decryption'} failed`);
+  // Compile and run
+  exec(`g++ ${cppFile} -o ${outputBinary} && ./${outputBinary} < ${inputFile}`, 
+      { timeout: 5000 },
+      (err, stdout, stderr) => {
+          if (err) {
+              console.error(`[${algorithm}] Error:`, stderr);
+              return res.status(500).send(`Vigenère ${isEncrypt ? 'encryption' : 'decryption'} failed: ${stderr}`);
+          }
+          res.send(stdout.trim());
       }
-      res.send(stdout.trim());
-  });
+  );
 };
 // Encryption Route
 app.post('/run', (req, res) => {

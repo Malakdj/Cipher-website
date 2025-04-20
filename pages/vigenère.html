@@ -348,41 +348,31 @@
         function runCipher() {
             const key = document.getElementById("key").value.trim();
             const message = document.getElementById("message").value.trim();
-            const algorithm = document.getElementById("algorithmName").value;
 
-            // Validate inputs
             if (!key || !message) {
-                document.getElementById("output").textContent = "Please fill in both key and message fields";
+                document.getElementById("output").textContent = "Please enter both key and message";
                 return;
             }
 
-            // Validate key contains only letters
             if (!/^[a-zA-Z]+$/.test(key)) {
-                document.getElementById("output").textContent = "Key must contain only letters (A-Z, a-z)";
+                document.getElementById("output").textContent = "Key must contain only letters";
                 return;
             }
 
-            fetch("https://cipher-website.onrender.com/run", {
+            fetch("/run", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    algorithm: "Vigenère",
+                    algorithm: "vigenère",
                     key: key,
                     message: message
                 })
             })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(err => { throw new Error(err) });
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById("output").textContent = data || "No output received";
-                })
+                .then(response => response.ok ? response.text() : response.text().then(err => { throw new Error(err) }))
+                .then(data => document.getElementById("output").textContent = data)
                 .catch(error => {
                     console.error("Error:", error);
-                    document.getElementById("output").textContent = "Error: " + error.message;
+                    document.getElementById("output").textContent = error.message;
                 });
         }
         function runDecryption() {
