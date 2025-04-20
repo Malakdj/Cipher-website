@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
 
-// Function to decrypt the message using Caesar Cipher
 void decryptCaesar(char *message, int shift) {
     for (int i = 0; message[i] != '\0'; i++) {
         char ch = message[i];
@@ -17,23 +18,21 @@ void decryptCaesar(char *message, int shift) {
 }
 
 int main() {
-    char message[100];
-    int shift;
+    char key_str[10];
+    char message[1000];
     
-    FILE *file = fopen("input.txt", "r");
-    if (file == NULL) {
-        printf("Error opening file!\n");
-        return 1;
-    }
+    // Read key and message from stdin
+    fgets(key_str, sizeof(key_str), stdin);
+    fgets(message, sizeof(message), stdin);
     
-    fscanf(file, "%d", &shift);
-    fgetc(file); // Consume newline
-    fgets(message, sizeof(message), file);
-    fclose(file);
+    // Remove newlines
+    key_str[strcspn(key_str, "\n")] = 0;
+    message[strcspn(message, "\n")] = 0;
+    
+    int shift = atoi(key_str);
     
     decryptCaesar(message, shift);
-    
-    printf("Decrypted message: %s", message);
+    printf("%s", message);
     
     return 0;
 }

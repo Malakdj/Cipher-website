@@ -6,7 +6,7 @@ void decryptVigenere(char *ciphertext, char *key, char *plaintext) {
     int i, j = 0;
     int textLen = strlen(ciphertext);
     int keyLen = strlen(key);
-
+    
     for (i = 0; i < textLen; i++) {
         if (isalpha(ciphertext[i])) {
             char base = isupper(ciphertext[i]) ? 'A' : 'a';
@@ -21,31 +21,20 @@ void decryptVigenere(char *ciphertext, char *key, char *plaintext) {
 }
 
 int main() {
-    FILE *inputFile = fopen("input.txt", "r");
-    if (inputFile == NULL) {
-        printf("Error: Unable to open input file!\n");
-        return 1;
-    }
-
-    char ciphertext[1000];
     char key[100];
+    char ciphertext[1000];
     char plaintext[1000];
-
-    // Read ciphertext from file
-    fgets(ciphertext, sizeof(ciphertext), inputFile);
-    fclose(inputFile);
-
-    // Remove newline if exists
-    ciphertext[strcspn(ciphertext, "\n")] = 0;
-
-    // Get key from user
-    printf("Enter the key: ");
+    
+    // Read key (first line) and ciphertext (second line)
     fgets(key, sizeof(key), stdin);
+    fgets(ciphertext, sizeof(ciphertext), stdin);
+    
+    // Remove newlines
     key[strcspn(key, "\n")] = 0;
-
+    ciphertext[strcspn(ciphertext, "\n")] = 0;
+    
     decryptVigenere(ciphertext, key, plaintext);
-
-    printf("Decrypted text: %s\n", plaintext);
-
+    printf("%s", plaintext);
+    
     return 0;
 }
