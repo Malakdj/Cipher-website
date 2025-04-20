@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    
+
 
 </head>
 
@@ -323,7 +323,7 @@
             updateSidebarButtons(slideId);
         }
 
-       
+
 
 
 
@@ -332,18 +332,37 @@
         function runCipher() {
             const key = document.getElementById("key").value;
             const message = document.getElementById("message").value;
-            const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
+            const algorithm = document.getElementById("algorithmName").value;
+
+            // Validate inputs
+            if (!key || !message) {
+                document.getElementById("output").textContent = "Please fill in all fields";
+                return;
+            }
+
+            // Validate key is a number for Caesar cipher
+            if (isNaN(key)) {
+                document.getElementById("output").textContent = "Key must be a number for Caesar cipher";
+                return;
+            }
 
             fetch("https://cipher-website.onrender.com/run", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ algorithm, key, message })
             })
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Server returned error");
+                    }
+                    return response.text();
+                })
                 .then(data => document.getElementById("output").textContent = data)
-                .catch(error => console.error("Error:", error));
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("output").textContent = "Error: " + error.message;
+                });
         }
-
         function runDecryption() {
             const key = document.getElementById("keyDecryption").value;
             const message = document.getElementById("messageDecryption").value;

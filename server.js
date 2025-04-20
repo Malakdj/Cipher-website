@@ -54,11 +54,12 @@ const handleAlbertiOperation = (req, res, isEncrypt) => {
 };
 
 // Generic handler for other ciphers
+// In handleGenericCipher function
 const handleGenericCipher = (req, res, isEncrypt) => {
   const { algorithm, key, message } = req.body;
 
   if (!algorithm || !key || !message) {
-    return res.status(400).send("Missing algorithm, key, or message");
+      return res.status(400).send("Missing algorithm, key, or message");
   }
 
   const operation = isEncrypt ? '' : '_decrypt';
@@ -66,14 +67,15 @@ const handleGenericCipher = (req, res, isEncrypt) => {
   const cppFile = `codes/${algorithm}${operation}.cpp`;
   const outputBinary = `${algorithm}${operation}.out`;
 
+  // Write key on first line, message on second line
   fs.writeFileSync(inputFile, `${key}\n${message}`, 'utf8');
 
   runCppProgram(cppFile, outputBinary, (err, stdout, stderr) => {
-    if (err) {
-      console.error(`[${algorithm}${operation}] Error:`, stderr);
-      return res.status(500).send(stderr || `${algorithm} ${isEncrypt ? 'encryption' : 'decryption'} failed`);
-    }
-    res.send(stdout);
+      if (err) {
+          console.error(`[${algorithm}${operation}] Error:`, stderr);
+          return res.status(500).send(stderr || `${algorithm} ${isEncrypt ? 'encryption' : 'decryption'} failed`);
+      }
+      res.send(stdout.trim()); // Trim any extra whitespace
   });
 };
 

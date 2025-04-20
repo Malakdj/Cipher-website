@@ -15,17 +15,34 @@ void encryptCaesar(char *text, int key) {
 }
 
 int main() {
+    FILE *inputFile = fopen("input_caesar.txt", "r");
+    if (inputFile == NULL) {
+        fprintf(stderr, "Error opening input file\n");
+        return 1;
+    }
+
+    // Read key (first line) and message (second line)
     char key_str[10];
     char message[MAX_LEN];
     
-    // Read key and message from stdin (piped from server)
-    fgets(key_str, sizeof(key_str), stdin);
-    fgets(message, sizeof(message), stdin);
+    if (!fgets(key_str, sizeof(key_str), inputFile)) {
+        fprintf(stderr, "Error reading key\n");
+        fclose(inputFile);
+        return 1;
+    }
     
+    if (!fgets(message, sizeof(message), inputFile)) {
+        fprintf(stderr, "Error reading message\n");
+        fclose(inputFile);
+        return 1;
+    }
+    
+    fclose(inputFile);
+
     // Remove newlines
     key_str[strcspn(key_str, "\n")] = 0;
     message[strcspn(message, "\n")] = 0;
-    
+
     int key = atoi(key_str);
     
     encryptCaesar(message, key);
