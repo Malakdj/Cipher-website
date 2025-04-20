@@ -62,6 +62,13 @@ const handleGenericCipher = (req, res, isEncrypt) => {
       return res.status(400).send("Missing algorithm, key, or message");
   }
 
+  // Special handling for Vigenère
+  if (algorithm === "Vigenère") {
+      if (!/^[a-zA-Z]+$/.test(key)) {
+          return res.status(400).send("Vigenère key must contain only letters");
+      }
+  }
+
   const operation = isEncrypt ? '' : '_decrypt';
   const inputFile = `input_${algorithm}${operation}.txt`;
   const cppFile = `codes/${algorithm}${operation}.cpp`;
@@ -75,10 +82,9 @@ const handleGenericCipher = (req, res, isEncrypt) => {
           console.error(`[${algorithm}${operation}] Error:`, stderr);
           return res.status(500).send(stderr || `${algorithm} ${isEncrypt ? 'encryption' : 'decryption'} failed`);
       }
-      res.send(stdout.trim()); // Trim any extra whitespace
+      res.send(stdout.trim());
   });
 };
-
 // Encryption Route
 app.post('/run', (req, res) => {
   const { algorithm } = req.body;
@@ -89,11 +95,22 @@ app.post('/run', (req, res) => {
 });
 
 // Decryption Route
+// Decryption Route
 app.post('/runDecryption', (req, res) => {
   const { algorithm } = req.body;
+  
   if (algorithm === 'Alberti') {
-    return handleAlbertiOperation(req, res, false);
+      return handleAlbertiOperation(req, res, false);
   }
+  
+  // Special validation for Vigenère
+  if (algorithm === 'Vigenère') {
+      const { key } = req.body;
+      if (!/^[a-zA-Z]+$/.test(key)) {
+          return res.status(400).send("Vigenère key must contain only letters");
+      }
+  }
+  
   handleGenericCipher(req, res, false);
 });
 

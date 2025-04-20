@@ -363,21 +363,47 @@
                     document.getElementById("output").textContent = "Error: " + error.message;
                 });
         }
+
         function runDecryption() {
-            const key = document.getElementById("keyDecryption").value;
-            const message = document.getElementById("messageDecryption").value;
-            const algorithm = document.getElementById("algorithmName").value;  // Get the algorithm from the input field or use dynamic page info
+            const key = document.getElementById("keyDecryption").value.trim();
+            const message = document.getElementById("messageDecryption").value.trim();
+            const algorithm = document.getElementById("algorithmName").value;
+
+            // Validate inputs
+            if (!key || !message) {
+                document.getElementById("outputDecryption").textContent = "Please fill in both key and message fields";
+                return;
+            }
+
+            // Validate key is a number
+            if (isNaN(key)) {
+                document.getElementById("outputDecryption").textContent = "Key must be a number for Caesar cipher";
+                return;
+            }
 
             fetch("https://cipher-website.onrender.com/runDecryption", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ algorithm, key, message })
+                body: JSON.stringify({
+                    algorithm: "caesar",
+                    key: key,
+                    message: message
+                })
             })
-                .then(response => response.text())
-                .then(data => document.getElementById("outputDecryption").textContent = data)
-                .catch(error => console.error("Error:", error));
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(err => { throw new Error(err) });
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById("outputDecryption").textContent = data || "No output received";
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("outputDecryption").textContent = "Error: " + error.message;
+                });
         }
-
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const overlay = document.querySelector('.sidebar-overlay');

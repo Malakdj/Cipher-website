@@ -45,7 +45,9 @@
             <div id="definition" class="slide active-slide">
                 <div class="centered-content">
                     <h3>Definition</h3>
-                    <p>The Vigenère Cipher is a method of encrypting alphabetic text by using a series of Caesar ciphers based on the letters of a keyword. It is a polyalphabetic cipher, meaning it uses multiple Caesar shifts depending on the keyword.
+                    <p>The Vigenère Cipher is a method of encrypting alphabetic text by using a series of Caesar ciphers
+                        based on the letters of a keyword. It is a polyalphabetic cipher, meaning it uses multiple
+                        Caesar shifts depending on the keyword.
                     </p>
 
                     <!-- Add an image -->
@@ -57,17 +59,20 @@
             <div id="howToWork" class="slide">
                 <div class="centered-content">
                     <h3>How the Vigenère Cipher Works</h3>
-                    <p>The Vigenère Cipher is a <b>polyalphabetic substitution cipher</b> named after Blaise de Vigenère. 
-                       It uses multiple Caesar ciphers based on a keyword, making it much stronger than simple substitution ciphers.</p>
-            
+                    <p>The Vigenère Cipher is a <b>polyalphabetic substitution cipher</b> named after Blaise de
+                        Vigenère.
+                        It uses multiple Caesar ciphers based on a keyword, making it much stronger than simple
+                        substitution ciphers.</p>
+
                     <h4>Components of the Vigenère Cipher</h4>
                     <ul>
                         <li><b>Alphabet Table (Vigenère Square)</b> – A 26×26 grid of shifted alphabets.</li>
-                        <li><b>Key</b> – A word or phrase used to determine how much each letter in the plaintext is shifted.</li>
+                        <li><b>Key</b> – A word or phrase used to determine how much each letter in the plaintext is
+                            shifted.</li>
                         <li><b>Plaintext</b> – The original message to be encrypted.</li>
                         <li><b>Ciphertext</b> – The encrypted message.</li>
                     </ul>
-            
+
                     <h4>Encryption Process</h4>
                     <ol>
                         <li><b>Repeat the Key:</b> Repeat the key so it matches the length of the plaintext.</li>
@@ -79,7 +84,7 @@
                             </ul>
                         </li>
                     </ol>
-            
+
                     <h4>Decryption Process</h4>
                     <ol>
                         <li><b>Repeat the Key:</b> Repeat the key to match the length of the ciphertext.</li>
@@ -91,12 +96,13 @@
                             </ul>
                         </li>
                     </ol>
-            
+
                     <h4>Example</h4>
                     <p><b>Plaintext:</b> HELLO<br>
-                       <b>Key:</b> KEYKE<br>
-                       <b>Result:</b> RIJVS</p>
-            
+                        <b>Key:</b> KEYKE<br>
+                        <b>Result:</b> RIJVS
+                    </p>
+
                     <table border="1"
                         style="width: 80%; text-align: center; background: #252526; color: white; border-collapse: collapse; margin-top: 10px;">
                         <tr style="background: #007acc;">
@@ -130,20 +136,21 @@
                             <td>S</td>
                         </tr>
                     </table>
-            
+
                     <h4>Weaknesses of the Vigenère Cipher</h4>
                     <ul>
                         <li>Repetition of the key can make it vulnerable to frequency analysis.</li>
                         <li>Not secure against modern cryptanalysis if the key is short or reused.</li>
                         <li>Modern encryption (like AES) is much stronger and more secure.</li>
                     </ul>
-            
+
                     <h4>Why It Matters</h4>
-                    <p>The Vigenère Cipher was the first <b>polyalphabetic cipher</b> to resist frequency analysis. 
-                       It played a key role in the history of cryptography and helped lead to modern encryption methods.</p>
+                    <p>The Vigenère Cipher was the first <b>polyalphabetic cipher</b> to resist frequency analysis.
+                        It played a key role in the history of cryptography and helped lead to modern encryption
+                        methods.</p>
                 </div>
             </div>
-            
+
 
 
             <!-- Cryptage Slide -->
@@ -338,14 +345,19 @@
 
 
         function runCipher() {
-            const key = document.getElementById("key").value;
-            const message = document.getElementById("message").value;
-            const rotateInterval = document.getElementById("rotateInterval").value;
+            const key = document.getElementById("key").value.trim();
+            const message = document.getElementById("message").value.trim();
             const algorithm = document.getElementById("algorithmName").value;
 
             // Validate inputs
-            if (!key || !message || !rotateInterval) {
-                document.getElementById("output").textContent = "Please fill in all fields (key, message, and rotation interval)";
+            if (!key || !message) {
+                document.getElementById("output").textContent = "Please fill in both key and message fields";
+                return;
+            }
+
+            // Validate key contains only letters
+            if (!/^[a-zA-Z]+$/.test(key)) {
+                document.getElementById("output").textContent = "Key must contain only letters (A-Z, a-z)";
                 return;
             }
 
@@ -353,29 +365,39 @@
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    algorithm,
-                    key,
-                    message,
-                    rotateInterval  // Add this parameter
+                    algorithm: "Vigenère",
+                    key: key,
+                    message: message
                 })
             })
-                .then(response => response.text())
-                .then(data => document.getElementById("output").textContent = data)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(err => { throw new Error(err) });
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById("output").textContent = data || "No output received";
+                })
                 .catch(error => {
                     console.error("Error:", error);
                     document.getElementById("output").textContent = "Error: " + error.message;
                 });
         }
-
         function runDecryption() {
-            const key = document.getElementById("keyDecryption").value;
-            const message = document.getElementById("messageDecryption").value;
-            const rotateInterval = document.getElementById("rotateIntervalDecryption").value;
+            const key = document.getElementById("keyDecryption").value.trim();
+            const message = document.getElementById("messageDecryption").value.trim();
             const algorithm = document.getElementById("algorithmName").value;
 
             // Validate inputs
-            if (!key || !message || !rotateInterval) {
-                document.getElementById("outputDecryption").textContent = "Please fill in all fields (key, message, and rotation interval)";
+            if (!key || !message) {
+                document.getElementById("outputDecryption").textContent = "Please fill in both key and message fields";
+                return;
+            }
+
+            // Validate key contains only letters
+            if (!/^[a-zA-Z]+$/.test(key)) {
+                document.getElementById("outputDecryption").textContent = "Key must contain only letters (A-Z, a-z)";
                 return;
             }
 
@@ -383,20 +405,25 @@
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    algorithm,
-                    key,
-                    message,
-                    rotateInterval  // Add this parameter
+                    algorithm: "Vigenère",
+                    key: key,
+                    message: message
                 })
             })
-                .then(response => response.text())
-                .then(data => document.getElementById("outputDecryption").textContent = data)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(err => { throw new Error(err) });
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById("outputDecryption").textContent = data || "No output received";
+                })
                 .catch(error => {
                     console.error("Error:", error);
                     document.getElementById("outputDecryption").textContent = "Error: " + error.message;
                 });
         }
-
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const overlay = document.querySelector('.sidebar-overlay');

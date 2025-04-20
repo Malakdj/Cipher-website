@@ -5,25 +5,22 @@
 
 void decryptCaesar(char *message, int shift) {
     for (int i = 0; message[i] != '\0'; i++) {
-        char ch = message[i];
-        
-        if (ch >= 'A' && ch <= 'Z') {
-            ch = (ch - 'A' - shift + 26) % 26 + 'A';
-        } else if (ch >= 'a' && ch <= 'z') {
-            ch = (ch - 'a' - shift + 26) % 26 + 'a';
+        if (isalpha(message[i])) {
+            char base = isupper(message[i]) ? 'A' : 'a';
+            message[i] = (message[i] - base - shift + 26) % 26 + base;
         }
-        
-        message[i] = ch;
     }
 }
 
 int main() {
+    // Read from standard input (key on first line, message on second line)
     char key_str[10];
     char message[1000];
     
-    // Read key and message from stdin
-    fgets(key_str, sizeof(key_str), stdin);
-    fgets(message, sizeof(message), stdin);
+    if (!fgets(key_str, sizeof(key_str), stdin) || !fgets(message, sizeof(message), stdin)) {
+        fprintf(stderr, "Error reading input\n");
+        return 1;
+    }
     
     // Remove newlines
     key_str[strcspn(key_str, "\n")] = 0;
