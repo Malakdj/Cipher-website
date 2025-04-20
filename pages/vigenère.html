@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigenère Cipher Runner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Logo container with house icon and title -->
+        <div class="logo-container">
+            <h2>Vigenère</h2>
+            <a href="index.html">
+                <i class="fas fa-home logo"></i>
+            </a>
+        </div>
+
+        <button onclick="showSlide('definition')" class="active">Definition</button>
+        <button onclick="showSlide('howToWork')">How It Works</button>
+        <button onclick="showSlide('cryptage')">Encryption</button>
+        <button onclick="showSlide('decryptage')">Decryption</button>
+    </div>
+
+    <!-- Mobile Menu Button (add near top of body) -->
+    <div class="mobile-menu-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+
+
+    <!-- Content Area -->
+    <div class="content">
+        <div class="container">
+            <!-- Definition Slide -->
+            <div id="definition" class="slide active-slide">
+                <div class="centered-content">
+                    <h3>Definition</h3>
+                    <p>The Vigenère Cipher is a method of encrypting alphabetic text by using a series of Caesar ciphers based on the letters of a keyword. It is a polyalphabetic cipher, meaning it uses multiple Caesar shifts depending on the keyword.
+                    </p>
+
+                    <!-- Add an image -->
+                    <!-- <img src="imag/Vigenère1.png" alt="Vigenère Cipher Example" class="definition-image"> -->
+                </div>
+            </div>
+
+            <!-- How to Work Slide -->
+            <div id="howToWork" class="slide">
+                <div class="centered-content">
+                    <h3>How the Vigenère Cipher Works</h3>
+                    <p>The Vigenère Cipher is a <b>polyalphabetic substitution cipher</b> named after Blaise de Vigenère. 
+                       It uses multiple Caesar ciphers based on a keyword, making it much stronger than simple substitution ciphers.</p>
+            
+                    <h4>Components of the Vigenère Cipher</h4>
+                    <ul>
+                        <li><b>Alphabet Table (Vigenère Square)</b> – A 26×26 grid of shifted alphabets.</li>
+                        <li><b>Key</b> – A word or phrase used to determine how much each letter in the plaintext is shifted.</li>
+                        <li><b>Plaintext</b> – The original message to be encrypted.</li>
+                        <li><b>Ciphertext</b> – The encrypted message.</li>
+                    </ul>
+            
+                    <h4>Encryption Process</h4>
+                    <ol>
+                        <li><b>Repeat the Key:</b> Repeat the key so it matches the length of the plaintext.</li>
+                        <li><b>Shift Letters:</b> For each letter in the plaintext:
+                            <ul>
+                                <li>Find its position in the alphabet (A=0 to Z=25).</li>
+                                <li>Find the position of the matching key letter.</li>
+                                <li>Add both positions and take the result modulo 26 to get the encrypted letter.</li>
+                            </ul>
+                        </li>
+                    </ol>
+            
+                    <h4>Decryption Process</h4>
+                    <ol>
+                        <li><b>Repeat the Key:</b> Repeat the key to match the length of the ciphertext.</li>
+                        <li><b>Reverse the Shift:</b> For each letter in the ciphertext:
+                            <ul>
+                                <li>Find its position and the key letter’s position.</li>
+                                <li>Subtract the key position from the ciphertext position, add 26, then modulo 26.</li>
+                                <li>Convert back to a letter to get the original plaintext.</li>
+                            </ul>
+                        </li>
+                    </ol>
+            
+                    <h4>Example</h4>
+                    <p><b>Plaintext:</b> HELLO<br>
+                       <b>Key:</b> KEYKE<br>
+                       <b>Result:</b> RIJVS</p>
+            
+                    <table border="1"
+                        style="width: 80%; text-align: center; background: #252526; color: white; border-collapse: collapse; margin-top: 10px;">
+                        <tr style="background: #007acc;">
+                            <th>Plaintext Letter</th>
+                            <th>Key Letter</th>
+                            <th>Ciphertext Letter</th>
+                        </tr>
+                        <tr>
+                            <td>H</td>
+                            <td>K</td>
+                            <td>R</td>
+                        </tr>
+                        <tr>
+                            <td>E</td>
+                            <td>E</td>
+                            <td>I</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>Y</td>
+                            <td>J</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>K</td>
+                            <td>V</td>
+                        </tr>
+                        <tr>
+                            <td>O</td>
+                            <td>E</td>
+                            <td>S</td>
+                        </tr>
+                    </table>
+            
+                    <h4>Weaknesses of the Vigenère Cipher</h4>
+                    <ul>
+                        <li>Repetition of the key can make it vulnerable to frequency analysis.</li>
+                        <li>Not secure against modern cryptanalysis if the key is short or reused.</li>
+                        <li>Modern encryption (like AES) is much stronger and more secure.</li>
+                    </ul>
+            
+                    <h4>Why It Matters</h4>
+                    <p>The Vigenère Cipher was the first <b>polyalphabetic cipher</b> to resist frequency analysis. 
+                       It played a key role in the history of cryptography and helped lead to modern encryption methods.</p>
+                </div>
+            </div>
+            
+
+
+            <!-- Cryptage Slide -->
+            <div id="cryptage" class="slide">
+                <h3>Vigenère Cipher Encryption</h3>
+                <input type="hidden" id="algorithmName" value="Vigenère"> <!-- Adjust this for each algorithm -->
+                <textarea readonly rows="10">
+                    #include <stdio.h>
+                    #include <string.h>
+                    #include <ctype.h>
+                        
+                    void encryptVigenere(char *plaintext, char *key, char *ciphertext) {
+                        int i, j = 0;
+                        int textLen = strlen(plaintext);
+                        int keyLen = strlen(key);
+                        
+                        for (i = 0; i < textLen; i++) {
+                            if (isalpha(plaintext[i])) {
+                                char base = isupper(plaintext[i]) ? 'A' : 'a'; // Keep case
+                                char keyChar = tolower(key[j % keyLen]) - 'a'; // Convert key char to shift value
+                                ciphertext[i] = ((tolower(plaintext[i]) - 'a' + keyChar) % 26) + base;
+                                j++; // Move to next key letter only if the char is a letter
+                            } else {
+                                ciphertext[i] = plaintext[i]; // Keep spaces and symbols
+                            }
+                        }
+                        ciphertext[i] = '\0'; // Null-terminate the ciphertext
+                    }
+                        
+                    int main() {
+                        char plaintext[100];
+                        char key[100];
+                        char ciphertext[100];
+                        
+                        printf("Enter the plaintext: ");
+                        fgets(plaintext, sizeof(plaintext), stdin);
+                        plaintext[strcspn(plaintext, "\n")] = 0; // Remove newline character
+                        
+                        printf("Enter the key: ");
+                        fgets(key, sizeof(key), stdin);
+                        key[strcspn(key, "\n")] = 0;
+                        
+                        encryptVigenere(plaintext, key, ciphertext);
+                        
+                        printf("Encrypted text: %s\n", ciphertext);
+                        
+                        return 0;
+                    }
+                        
+                        
+                </textarea>
+                <br>
+                <label for="key">Enter Key (A-Z):</label>
+                <input type="text" id="key" placeholder="A-Z" maxlength="1">
+                <label for="key">Rotation Interval:</label>
+                <input type="number" id="rotateInterval" placeholder="e.g., 3" min="1">
+                <label for="message">Enter Message:</label>
+                <textarea id="message" rows="4" placeholder="Enter your message..."></textarea>
+                <button onclick="runCipher()">Run</button>
+                <!-- Output title under the button -->
+                <h2 id="outputTitle">Output:</h2>
+                <pre id="output"></pre>
+            </div>
+            <!-- Decryptage Slide -->
+            <div id="decryptage" class="slide">
+                <h3>Vigenère Cipher Decryption</h3>
+                <textarea readonly rows="10">
+                    #include <stdio.h>
+                        #include <string.h>
+                        #include <ctype.h>
+                        
+                        void decryptVigenere(char *ciphertext, char *key, char *plaintext) {
+                            int i, j = 0;
+                            int textLen = strlen(ciphertext);
+                            int keyLen = strlen(key);
+                        
+                            for (i = 0; i < textLen; i++) {
+                                if (isalpha(ciphertext[i])) {
+                                    char base = isupper(ciphertext[i]) ? 'A' : 'a';
+                                    char keyChar = tolower(key[j % keyLen]) - 'a';
+                                    plaintext[i] = ((tolower(ciphertext[i]) - 'a' - keyChar + 26) % 26) + base;
+                                    j++;
+                                } else {
+                                    plaintext[i] = ciphertext[i]; // Keep spaces and symbols
+                                }
+                            }
+                            plaintext[i] = '\0'; // Null-terminate the result
+                        }
+                        
+                        int main() {
+                            char ciphertext[1000];
+                            char key[100];
+                            char plaintext[1000];
+                        
+                            printf("Enter the ciphertext: ");
+                            fgets(ciphertext, sizeof(ciphertext), stdin);
+                            ciphertext[strcspn(ciphertext, "\n")] = 0; // Remove newline
+                        
+                            printf("Enter the key: ");
+                            fgets(key, sizeof(key), stdin);
+                            key[strcspn(key, "\n")] = 0;
+                        
+                            decryptVigenere(ciphertext, key, plaintext);
+                        
+                            printf("Decrypted text: %s\n", plaintext);
+                        
+                            return 0;
+                        }
+                                                   
+                </textarea>
+                <br>
+                <!-- In the decryption section, change the input IDs to be unique -->
+                <label for="keyDecryption">Enter Key (A-Z):</label>
+                <input type="text" id="keyDecryption" placeholder="A-Z" maxlength="1">
+                <label for="rotateIntervalDecryption">Rotation Interval:</label>
+                <input type="number" id="rotateIntervalDecryption" placeholder="e.g., 3" min="1">
+                <label for="messageDecryption">Enter Message:</label>
+                <textarea id="messageDecryption" rows="4" placeholder="Enter ciphertext..."></textarea>
+                <button onclick="runDecryption()">Run</button>
+                <h2 id="outputTitle">Output:</h2>
+                <pre id="outputDecryption"></pre>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <script>
+
+        function showSlide(slideId, fromLoad = false) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => slide.classList.remove('active-slide'));
+
+            document.getElementById(slideId).classList.add('active-slide');
+
+            if (!fromLoad) {
+                sessionStorage.setItem('selectedSlide', slideId);
+            }
+
+            updateSidebarButtons(slideId);
+        }
+
+        function updateSidebarButtons(activeSlide) {
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.sidebar button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            // Add active class to the clicked button
+            const activeButton = document.querySelector(`[onclick="showSlide('${activeSlide}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+
+        window.onload = function () {
+            const currentPage = document.title;
+            const lastPage = localStorage.getItem('lastPage');
+
+            if (lastPage !== currentPage) {
+                // User came from a different page → reset to first slide
+                sessionStorage.removeItem('selectedSlide');
+                localStorage.setItem('lastPage', currentPage);
+            }
+
+            const savedSlide = sessionStorage.getItem('selectedSlide') || 'definition';
+            showSlide(savedSlide, true); // Pass true to indicate this is from page load
+        };
+
+        window.addEventListener('beforeunload', function () {
+            const navigationType = performance.getEntriesByType("navigation")[0].type;
+            if (navigationType === "navigate" || navigationType === "reload") {
+                // Keep the slide state for refreshes
+                return;
+            }
+            // Clear for other types of navigation
+            sessionStorage.removeItem('selectedSlide');
+        });
+
+
+        function showSlide(slideId) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => slide.classList.remove('active-slide'));
+
+            document.getElementById(slideId).classList.add('active-slide');
+            sessionStorage.setItem('selectedSlide', slideId);
+
+            updateSidebarButtons(slideId);
+        }
+
+
+
+
+
+
+
+        function runCipher() {
+            const key = document.getElementById("key").value;
+            const message = document.getElementById("message").value;
+            const rotateInterval = document.getElementById("rotateInterval").value;
+            const algorithm = document.getElementById("algorithmName").value;
+
+            // Validate inputs
+            if (!key || !message || !rotateInterval) {
+                document.getElementById("output").textContent = "Please fill in all fields (key, message, and rotation interval)";
+                return;
+            }
+
+            fetch("https://cipher-website.onrender.com/run", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    algorithm,
+                    key,
+                    message,
+                    rotateInterval  // Add this parameter
+                })
+            })
+                .then(response => response.text())
+                .then(data => document.getElementById("output").textContent = data)
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("output").textContent = "Error: " + error.message;
+                });
+        }
+
+        function runDecryption() {
+            const key = document.getElementById("keyDecryption").value;
+            const message = document.getElementById("messageDecryption").value;
+            const rotateInterval = document.getElementById("rotateIntervalDecryption").value;
+            const algorithm = document.getElementById("algorithmName").value;
+
+            // Validate inputs
+            if (!key || !message || !rotateInterval) {
+                document.getElementById("outputDecryption").textContent = "Please fill in all fields (key, message, and rotation interval)";
+                return;
+            }
+
+            fetch("https://cipher-website.onrender.com/runDecryption", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    algorithm,
+                    key,
+                    message,
+                    rotateInterval  // Add this parameter
+                })
+            })
+                .then(response => response.text())
+                .then(data => document.getElementById("outputDecryption").textContent = data)
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("outputDecryption").textContent = "Error: " + error.message;
+                });
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            const isActive = sidebar.classList.contains('active');
+
+            if (isActive) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            } else {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+
+        // Close sidebar on body click or button click inside it (mobile only)
+        document.addEventListener('click', function (event) {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const button = document.querySelector('.mobile-menu-btn');
+
+            const clickedInsideSidebar = sidebar.contains(event.target);
+            const clickedButton = button.contains(event.target);
+
+            if (window.innerWidth <= 768 && !clickedInsideSidebar && !clickedButton) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        });
+
+        // Also close sidebar when any sidebar button is clicked
+        const sidebarButtons = document.querySelectorAll('.sidebar button');
+        sidebarButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.sidebar').classList.remove('active');
+                    document.querySelector('.sidebar-overlay').classList.remove('active');
+                }
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>

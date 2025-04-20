@@ -27,6 +27,7 @@
         <option value="">-- Select Algorithm --</option>
         <option value="caesar">Caesar Cipher</option>
         <option value="alberti">Alberti Cipher</option>
+        <option value="alberti">Vigenère Cipher</option>
         <!-- Add more algorithms here -->
     </select>
 
@@ -38,6 +39,8 @@
                 window.location.href = "/caesar.html";  // Redirect to alberti algorithm page
             } else if (algorithm === "alberti") {
                 window.location.href = "/alberti.html";  // Redirect to caesar algorithm page
+            }else if (algorithm === "vigenère") {
+                window.location.href = "/vigenère.html";
             }
         }
 
@@ -47,6 +50,7 @@
             const algorithms = {
                 caesar: '/caesar.html',
                 alberti: '/alberti.html',
+                vigenère: '/vigenère.html',
                 // Add more algorithm mappings here
             };
 
