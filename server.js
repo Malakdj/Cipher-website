@@ -54,7 +54,6 @@ const handleAlbertiOperation = (req, res, isEncrypt) => {
 };
 
 // Generic handler for other ciphers
-// In handleGenericCipher function
 const handleGenericCipher = (req, res, isEncrypt) => {
   const { algorithm, key, message } = req.body;
 
@@ -62,24 +61,23 @@ const handleGenericCipher = (req, res, isEncrypt) => {
       return res.status(400).send("Missing algorithm, key, or message");
   }
 
-  // Special handling for Vigenère
-  if (algorithm === "Vigenère") {
-      if (!/^[a-zA-Z]+$/.test(key)) {
-          return res.status(400).send("Vigenère key must contain only letters");
-      }
+  // Special handling for Vigenère file names
+  let cppFile;
+  if (algorithm.toLowerCase() === "vigenère") {
+      cppFile = isEncrypt ? "codes/vigenère_encrypt.cpp" : "codes/vigenère_decrypt.cpp";
+  } else {
+      const operation = isEncrypt ? '' : '_decrypt';
+      cppFile = `codes/${algorithm}${operation}.cpp`;
   }
 
-  const operation = isEncrypt ? '' : '_decrypt';
-  const inputFile = `input_${algorithm}${operation}.txt`;
-  const cppFile = `codes/${algorithm}${operation}.cpp`;
-  const outputBinary = `${algorithm}${operation}.out`;
+  const inputFile = `input_${algorithm}${isEncrypt ? '' : '_decrypt'}.txt`;
+  const outputBinary = `${algorithm}${isEncrypt ? '' : '_decrypt'}.out`;
 
-  // Write key on first line, message on second line
   fs.writeFileSync(inputFile, `${key}\n${message}`, 'utf8');
 
   runCppProgram(cppFile, outputBinary, (err, stdout, stderr) => {
       if (err) {
-          console.error(`[${algorithm}${operation}] Error:`, stderr);
+          console.error(`[${algorithm}] Error:`, stderr);
           return res.status(500).send(stderr || `${algorithm} ${isEncrypt ? 'encryption' : 'decryption'} failed`);
       }
       res.send(stdout.trim());
