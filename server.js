@@ -4,126 +4,105 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const app = express();
 
-// Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'pages')));
 app.use('/css', express.static(path.join(__dirname, 'pages/css')));
 
-// Verify g++ is installed during startup
+// Check for g++ on startup
 exec('g++ --version', (error) => {
   if (error) {
-    console.error('ERROR: g++ compiler not found. Encryption/decryption will fail.');
+    console.error('ERROR: g++ compiler not found. C++ programs will not run.');
   } else {
-    console.log('g++ compiler is available');
+    console.log('g++ compiler is available.');
   }
 });
 
-// Handle Alberti Cipher specifically
+// Utility to run a C++ program safely
+const runCppProgram = (cppFilePath, outputBinary, callback) => {
+  const command = `g++ ${cppFilePath} -o ${outputBinary} && ./${outputBinary}`;
+  exec(command, { timeout: 5000 }, callback);
+};
+
+// Handle Alberti Cipher (unique inputs)
 const handleAlbertiOperation = (req, res, isEncrypt) => {
-  const { algorithm, key, message, rotateInterval } = req.body;
-  
-  // 1. Validate input
-  if (!algorithm || !key || !message || !rotateInterval) {
-    return res.status(400).send("Missing required fields (key, message, rotationInterval)");
-  }
+  const { key, message, rotateInterval } = req.body;
 
-  // Validate key is A-Z single character
+  if (!key || !message || !rotateInterval) {
+    return res.status(400).send("Missing key, message or rotation interval");
+  }
   if (!/^[A-Za-z]$/.test(key)) {
-    return res.status(400).send("Key must be a single letter A-Z");
+    return res.status(400).send("Key must be a single letter (A-Z)");
   }
-
-  // Validate rotation interval
   if (isNaN(rotateInterval) || rotateInterval < 1) {
     return res.status(400).send("Rotation interval must be a positive number");
   }
 
-  // 2. Prepare input file (format: key\nrotateInterval\nmessage)
-  fs.writeFileSync('input.txt', `${key}\n${rotateInterval}\n${message}`, 'utf8');
+  const inputContent = `${key}\n${rotateInterval}\n${message}`;
+  const operation = isEncrypt ? "encrypt" : "decrypt";
+  const filePrefix = `alberti_${operation}`;
+  const cppPath = `codes/${filePrefix}.cpp`;
 
-  // 3. Determine operation type
-  const operation = isEncrypt ? 'encrypt' : 'decrypt';
-  const cppFile = `codes/alberti_${operation}.cpp`;
-  const outputFile = `alberti_${operation}.out`;
+  fs.writeFileSync(`input_${filePrefix}.txt`, inputContent, 'utf8');
 
-  // 4. Execute C++ code
-  exec(`g++ ${cppFile} -o ${outputFile} && ./${outputFile}`,
-    { timeout: 5000 },
-    (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Alberti ${operation} error:`, {
-          error: error.message,
-          stderr,
-          stdout
-        });
-        return res.status(500).send(stderr || `${operation} failed`);
-      }
-      res.send(stdout);
+  runCppProgram(cppPath, `${filePrefix}.out`, (err, stdout, stderr) => {
+    if (err) {
+      console.error(`[Alberti ${operation}] Error:`, stderr);
+      return res.status(500).send(stderr || `${operation} failed`);
     }
-  );
+    res.send(stdout);
+  });
 };
 
-// Handle encryption requests
+// Generic handler for other ciphers
+const handleGenericCipher = (req, res, isEncrypt) => {
+  const { algorithm, key, message } = req.body;
+
+  if (!algorithm || !key || !message) {
+    return res.status(400).send("Missing algorithm, key, or message");
+  }
+
+  const operation = isEncrypt ? '' : '_decrypt';
+  const inputFile = `input_${algorithm}${operation}.txt`;
+  const cppFile = `codes/${algorithm}${operation}.cpp`;
+  const outputBinary = `${algorithm}${operation}.out`;
+
+  fs.writeFileSync(inputFile, `${key}\n${message}`, 'utf8');
+
+  runCppProgram(cppFile, outputBinary, (err, stdout, stderr) => {
+    if (err) {
+      console.error(`[${algorithm}${operation}] Error:`, stderr);
+      return res.status(500).send(stderr || `${algorithm} ${isEncrypt ? 'encryption' : 'decryption'} failed`);
+    }
+    res.send(stdout);
+  });
+};
+
+// Encryption Route
 app.post('/run', (req, res) => {
-  if (req.body.algorithm === 'Alberti') {
+  const { algorithm } = req.body;
+  if (algorithm === 'Alberti') {
     return handleAlbertiOperation(req, res, true);
   }
-
-  // Original generic handler for other ciphers
-  const { algorithm, key, message } = req.body;
-  
-  if (!algorithm || !key || !message) {
-    return res.status(400).send("Missing required fields");
-  }
-
-  fs.writeFileSync('input.txt', `${key}\n${message}`, 'utf8');
-
-  exec(`g++ codes/${algorithm}.cpp -o ${algorithm}.out && ./${algorithm}.out`, 
-    { timeout: 5000 },
-    (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Execution error: ${stderr}`);
-        return res.status(500).send(stderr || "Encryption failed");
-      }
-      res.send(stdout);
-    }
-  );
+  handleGenericCipher(req, res, true);
 });
 
-// Handle decryption requests
+// Decryption Route
 app.post('/runDecryption', (req, res) => {
-  if (req.body.algorithm === 'Alberti') {
+  const { algorithm } = req.body;
+  if (algorithm === 'Alberti') {
     return handleAlbertiOperation(req, res, false);
   }
-
-  // Original generic handler for other ciphers
-  const { algorithm, key, message } = req.body;
-  
-  if (!algorithm || !key || !message) {
-    return res.status(400).send("Missing required fields");
-  }
-
-  fs.writeFileSync('input.txt', `${key}\n${message}`, 'utf8');
-
-  exec(`g++ codes/${algorithm}_decrypt.cpp -o ${algorithm}_decrypt.out && ./${algorithm}_decrypt.out`, 
-    { timeout: 5000 },
-    (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Execution error: ${stderr}`);
-        return res.status(500).send(stderr || "Decryption failed");
-      }
-      res.send(stdout);
-    }
-  );
+  handleGenericCipher(req, res, false);
 });
 
-// Error handling middleware
+// Error Middleware
 app.use((err, req, res, next) => {
-  console.error('Server error:', err.stack);
+  console.error('Unhandled error:', err.stack);
   res.status(500).send('Server error');
 });
 
-// Start server
+// Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🔐 Cipher server running on port ${PORT}`);
 });
